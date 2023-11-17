@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.PhantomMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -197,7 +198,7 @@ public class HornOfPlenty extends Artifact {
 				float expPerCharge = 1f / chargesPerExp;
 				desc += "\n" + Messages.get(this, "desc_moreinfo",
 						Messages.decimalFormat("#.##", expPerCharge));
-				if (charge < chargeCap) {
+				if (charge < chargeCap && !Wand.RingOfEnergyIDIssue) {
 					desc += "\n" + Messages.get(this, "desc_nextcharge",
 							Messages.decimalFormat("#.##", expPerCharge * (1f - partialCharge)));
 				}

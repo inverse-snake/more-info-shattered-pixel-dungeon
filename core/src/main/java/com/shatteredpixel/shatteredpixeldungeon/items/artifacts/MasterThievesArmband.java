@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -245,7 +246,7 @@ public class MasterThievesArmband extends Artifact {
 				float expPerCharge = 1f / chargePerExp;
 				desc += "\n" + Messages.get(this, "desc_worn0",
 						Messages.decimalFormat("#.##", expPerCharge));
-				if (charge < chargeCap) {
+				if (charge < chargeCap && !Wand.RingOfEnergyIDIssue) {
 					desc += "\n" + Messages.get(this, "desc_nextcharge",
 							Messages.decimalFormat("#.##", expPerCharge * (1f - partialCharge)));
 				}

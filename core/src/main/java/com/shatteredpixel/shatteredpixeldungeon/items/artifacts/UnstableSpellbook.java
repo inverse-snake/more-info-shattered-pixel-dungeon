@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -262,8 +263,12 @@ public class UnstableSpellbook extends Artifact {
 			}
 			if (!cursed && charge < chargeCap) {
 				float chargeTime = 120f - (chargeCap - charge)*5f;
-				desc += "\n" + Messages.get(this, "desc_nextcharge",
-						Messages.decimalFormat("#.##", chargeTime * (1f - partialCharge)));
+				if (!Wand.RingOfEnergyIDIssue) {
+					desc += "\n" + Messages.get(this, "desc_nextcharge",
+							Messages.decimalFormat("#.##", chargeTime * (1f - partialCharge)));
+				} else {
+					desc += "\n" + Messages.get(this, "desc_nextcharge_roe", Math.round(chargeTime));
+				}
 			}
 		}
 		

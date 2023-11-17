@@ -67,6 +67,8 @@ import java.util.ArrayList;
 
 public abstract class Wand extends Item {
 
+	public static final boolean RingOfEnergyIDIssue = true; //if it somehow gets fixed, I'll remove this
+
 	public static final String AC_ZAP	= "ZAP";
 
 	private static final float TIME_TO_ZAP	= 1f;
@@ -268,9 +270,11 @@ public abstract class Wand extends Item {
 		}
 
 		if (isIdentified()) {
-			if (curCharges < maxCharges) {
+			if (!RingOfEnergyIDIssue && curCharges < maxCharges) {
 				desc += "\n\n" + Messages.get(this, "partial_charge",
 						Messages.decimalFormat("#.##", partialCharge * 100f));
+			} else {
+				desc += "\n\n" + Messages.get(this, "partial_charge_unspecific");
 			}
 		} else {
 			desc += "\n" + Messages.get(Wand.class, "uses_left", (int)Math.ceil(usesLeftToID));

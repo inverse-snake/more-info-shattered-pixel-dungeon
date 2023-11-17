@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -230,8 +231,13 @@ public class CloakOfShadows extends Artifact {
 				float missing = (chargeCap - charge);
 				if (level() > 7) missing += 5*(level() - 7)/3f;
 				float turnsToCharge = (45 - missing);
-				desc += "\n" + Messages.get(this, "next_charge",
-						Messages.decimalFormat("#.##", Math.max(0, turnsToCharge * (1 - partialCharge))));
+
+				if (Wand.RingOfEnergyIDIssue) {
+					desc += "\n" + Messages.get(this, "next_charge_roe", Messages.decimalFormat("#.##", turnsToCharge));
+				} else {
+					desc += "\n" + Messages.get(this, "next_charge",
+							Messages.decimalFormat("#.##", Math.max(0, turnsToCharge * (1 - partialCharge))));
+				}
 			}
 			if (level() < levelCap) {
 				int needed = (level() + 1) * 50 - exp;

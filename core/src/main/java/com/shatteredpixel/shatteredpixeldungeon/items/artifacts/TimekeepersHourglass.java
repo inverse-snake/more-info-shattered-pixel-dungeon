@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -192,8 +193,12 @@ public class TimekeepersHourglass extends Artifact {
 					desc += "\n\n" + Messages.get(this, "desc_hint");
 				if (charge < chargeCap) {
 					float chargeTime = 90f - (chargeCap - charge)*3f;
-					desc += "\n" + Messages.get(this, "desc_nextcharge",
-							Messages.decimalFormat("#.##", chargeTime * (1f - partialCharge)));
+					if (!Wand.RingOfEnergyIDIssue) {
+						desc += "\n" + Messages.get(this, "desc_nextcharge",
+								Messages.decimalFormat("#.##", chargeTime * (1f - partialCharge)));
+					} else {
+						desc += "\n" + Messages.get(this, "desc_nextcharge_roe", Math.round(chargeTime));
+					}
 				}
 			} else
 				desc += "\n\n" + Messages.get(this, "desc_cursed");

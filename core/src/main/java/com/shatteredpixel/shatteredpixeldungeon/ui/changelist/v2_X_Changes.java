@@ -96,6 +96,8 @@ public class v2_X_Changes {
 		changes = new ChangeInfo("More Info Mod v0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugfix - 0.1a",
+				"Fixed a ring of energy-related exploit"));
 		changes.addButton(new ChangeButton(SnakeSprite.inverseSnakeLogo(), "Initial Release",
 				"-A lot of descriptions added\n" +
 				"-All heroes and challenges unlocked by default\n" +

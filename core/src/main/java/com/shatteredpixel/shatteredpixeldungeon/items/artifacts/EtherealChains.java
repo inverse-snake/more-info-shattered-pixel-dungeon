@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -298,16 +299,26 @@ public class EtherealChains extends Artifact {
 			}
 			else {
 				desc += Messages.get(this, "desc_equipped");
-				if (charge < chargeTarget()) {
-					int expToNext = partialCharge < 1 ? (int)Math.ceil(Dungeon.hero.maxExp() / 6f * (1 - partialCharge)) : 0;
-					desc += "\n" + Messages.get(this, "desc_charge_turns", expToNext,
-							Messages.decimalFormat("#.##",
-									partialCharge < 1 ? (1f - partialCharge) * (40 - (chargeTarget() - charge)*2) : 0f));
-				}
-				else {
-					int expToNext = partialCharge < 1 ? (int)Math.ceil(Dungeon.hero.maxExp() / 6f / ((float)chargeTarget()/charge)
-							* (1 - partialCharge)) : 0;
-					desc += "\n" + Messages.get(this, "desc_charge_noturns", expToNext);
+				if (Wand.RingOfEnergyIDIssue) {
+					if (charge < chargeTarget()) {
+						int expToNext = (int) Math.ceil(Dungeon.hero.maxExp() / 6f);
+						desc += "\n" + Messages.get(this, "desc_charge_turns_roe", expToNext,
+								40 - (chargeTarget() - charge) * 2);
+					} else {
+						int expToNext = (int) Math.ceil(Dungeon.hero.maxExp() / 6f / ((float) chargeTarget() / charge));
+						desc += "\n" + Messages.get(this, "desc_charge_noturns_roe", expToNext);
+					}
+				} else {
+					if (charge < chargeTarget()) {
+						int expToNext = partialCharge < 1 ? (int) Math.ceil(Dungeon.hero.maxExp() / 6f * (1 - partialCharge)) : 0;
+						desc += "\n" + Messages.get(this, "desc_charge_turns", expToNext,
+								Messages.decimalFormat("#.##",
+										partialCharge < 1 ? (1f - partialCharge) * (40 - (chargeTarget() - charge) * 2) : 0f));
+					} else {
+						int expToNext = partialCharge < 1 ? (int) Math.ceil(Dungeon.hero.maxExp() / 6f / ((float) chargeTarget() / charge)
+								* (1 - partialCharge)) : 0;
+						desc += "\n" + Messages.get(this, "desc_charge_noturns", expToNext);
+					}
 				}
 				if (level() < levelCap) {
 					int percent_left = 100 + level() * 100 - exp;
