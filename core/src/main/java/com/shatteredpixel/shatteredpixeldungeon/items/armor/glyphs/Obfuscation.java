@@ -23,11 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
 public class Obfuscation extends Armor.Glyph {
 
-	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x888888 );
+	private static final ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x888888 );
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
@@ -36,8 +37,13 @@ public class Obfuscation extends Armor.Glyph {
 	}
 
 	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 1 + armorLevel/3f));
+	}
+
+	@Override
 	public ItemSprite.Glowing glowing() {
 		return GREY;
 	}
-
 }

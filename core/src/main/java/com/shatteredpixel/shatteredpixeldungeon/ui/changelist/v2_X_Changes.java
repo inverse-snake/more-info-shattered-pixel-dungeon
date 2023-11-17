@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TormentedSpiritSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -88,9 +89,19 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		//changes = new ChangeInfo("", false, null);
+		//changes.hardlight(Window.TITLE_COLOR);
+		//changeInfos.add(changes);
+
+		changes = new ChangeInfo("More Info Mod v0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+		changes.addButton(new ChangeButton(SnakeSprite.inverseSnakeLogo(), "Initial Release",
+				"-A lot of descriptions added\n" +
+				"-All heroes and challenges unlocked by default\n" +
+				"-Info about all recipes and similar available by default\n\n" +
+				"-Gameplay unchanged, to the point of identical seeds resulting in identical runs between this mod and ShPD\n\n" +
+				"-_Not very well tested!_ Contact me if any descriptions are wrong, broken or don't fit on the screen"));
 
 		changes = new ChangeInfo("v2.2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
@@ -103,6 +104,15 @@ public class Blooming extends Weapon.Enchantment {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String desc(int level) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (level+1f)/(level+3f)),
+				(int) Math.floor(1f + 0.1f*level),
+				(int) Math.ceil(1f + 0.1f*level),
+				Messages.decimalFormat("#.##", 1f + 0.1f*level));
 	}
 	
 	@Override

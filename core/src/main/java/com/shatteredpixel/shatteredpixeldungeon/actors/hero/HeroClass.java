@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -290,8 +291,9 @@ public enum HeroClass {
 	}
 	
 	public boolean isUnlocked(){
+		return true;
 		//always unlock on debug builds
-		if (DeviceCompat.isDebug()) return true;
+		/*if (DeviceCompat.isDebug()) return true;
 
 		switch (this){
 			case WARRIOR: default:
@@ -304,7 +306,7 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
 			case DUELIST:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
-		}
+		}*/
 	}
 	
 	public String unlockMsg() {

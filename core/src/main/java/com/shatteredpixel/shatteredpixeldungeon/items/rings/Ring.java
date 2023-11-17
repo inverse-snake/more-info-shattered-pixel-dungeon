@@ -180,6 +180,10 @@ public class Ring extends KindofMisc {
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
 		}
+
+		if (!isIdentified()) {
+			desc += "\n\n" + Messages.get(Ring.class, "exp_left", (int)Math.ceil(levelsToID * Dungeon.hero.maxExp()));
+		}
 		
 		return desc;
 	}

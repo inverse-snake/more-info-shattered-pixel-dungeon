@@ -78,13 +78,18 @@ public class RingOfMight extends Ring {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
 					soloBonus(), Messages.decimalFormat("#.##", 100f * (Math.pow(1.035, soloBuffedBonus()) - 1f)));
+			if (cursed && cursedKnown) {
+				info += "\n" + Messages.get(this, "remove_curse", (level() + 1),
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.035, buffedLvl() + 1) - 1f)));
+			}
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Might.class)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
 						getBonus(Dungeon.hero, Might.class), Messages.decimalFormat("#.##", 100f * (Math.pow(1.035, combinedBuffedBonus(Dungeon.hero, Might.class)) - 1f)));
 			}
-			return info;
+			return info + "\n\n" + Messages.get(this, "each_upgrade");
 		} else {
-			return Messages.get(this, "typical_stats", 1, Messages.decimalFormat("#.##", 3.5f));
+			return Messages.get(this, "typical_stats", 1, Messages.decimalFormat("#.##", 3.5f))
+					+ "\n\n" + Messages.get(this, "each_upgrade");
 		}
 	}
 

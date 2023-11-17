@@ -39,7 +39,7 @@ import com.watabou.utils.Bundle;
 
 public class Viscosity extends Glyph {
 	
-	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x8844CC );
+	private static final ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x8844CC );
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage ) {
@@ -49,6 +49,12 @@ public class Viscosity extends Glyph {
 
 		return damage;
 		
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (armorLevel+1f)/(armorLevel+6f)));
 	}
 
 	@Override

@@ -118,7 +118,12 @@ public class Food extends Item {
 
 		Buff.affect(hero, Hunger.class).satisfy(foodVal);
 	}
-	
+
+	@Override
+	public String desc() {
+		return super.desc() + "\n\n" + Messages.get(this, "desc_satiety", Math.round(energy));
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return false;

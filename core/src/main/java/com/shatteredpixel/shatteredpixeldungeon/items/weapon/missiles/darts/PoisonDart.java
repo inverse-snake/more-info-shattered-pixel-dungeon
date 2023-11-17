@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PoisonDart extends TippedDart {
@@ -42,5 +43,10 @@ public class PoisonDart extends TippedDart {
 		}
 		
 		return super.proc(attacker, defender, damage);
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 3 + Dungeon.scalingDepth() / 2);
 	}
 }

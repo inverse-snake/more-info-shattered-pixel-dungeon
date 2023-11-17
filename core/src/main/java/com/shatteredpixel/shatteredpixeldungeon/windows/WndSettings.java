@@ -824,7 +824,7 @@ public class WndSettings extends WndTabbed {
 			chkNews.checked(SPDSettings.news());
 			add(chkNews);
 
-			if (Updates.supportsUpdates() && Updates.supportsUpdatePrompts()) {
+			/*if (Updates.supportsUpdates() && Updates.supportsUpdatePrompts()) {
 				chkUpdates = new CheckBox(Messages.get(this, "updates")) {
 					@Override
 					protected void onClick() {
@@ -848,7 +848,7 @@ public class WndSettings extends WndTabbed {
 					chkBetas.checked(SPDSettings.betas());
 					add(chkBetas);
 				}
-			}
+			}*/
 
 			if (!DeviceCompat.isDesktop()){
 				chkWifi = new CheckBox(Messages.get(this, "wifi")){

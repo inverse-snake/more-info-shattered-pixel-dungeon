@@ -222,6 +222,44 @@ public class CloakOfShadows extends Artifact {
 		return 0;
 	}
 
+	@Override
+	public String desc() {
+		String desc = super.desc();
+		if (!cursed && cursedKnown && (isEquipped(Dungeon.hero) || Dungeon.hero.pointsInTalent(Talent.LIGHT_CLOAK) > 0)) {
+			if (charge < chargeCap && activeBuff == null && Regeneration.regenOn()) {
+				float missing = (chargeCap - charge);
+				if (level() > 7) missing += 5*(level() - 7)/3f;
+				float turnsToCharge = (45 - missing);
+				desc += "\n" + Messages.get(this, "next_charge",
+						Messages.decimalFormat("#.##", Math.max(0, turnsToCharge * (1 - partialCharge))));
+			}
+			if (level() < levelCap) {
+				int needed = (level() + 1) * 50 - exp;
+				int perCharge;
+				int lvlDiffFromTarget = Dungeon.hero.lvl - (1+level()*2);
+				if (level() >= 7){
+					lvlDiffFromTarget -= level()-6;
+				}
+				if (lvlDiffFromTarget >= 0){
+					perCharge = (int) Math.round(10f * Math.pow(1.1f, lvlDiffFromTarget));
+				} else {
+					perCharge = (int) Math.round(10f * Math.pow(0.75f, -lvlDiffFromTarget));
+				}
+				if (perCharge != 0) {
+					desc += "\n" + Messages.get(this, "next_lvl", Math.max(0, (needed + perCharge - 1) / perCharge));
+				} else {
+					//You'd have to be 11 levels off for it to stop charging outright,
+					//which is outright impossible for heroes above level 8,
+					//and you'd need to spend hundreds of charges
+					//to get to that cloak level without leveling up the hero,
+					//but I'm sure someone will be insane enough to do it anyway.
+					desc += "\n" + Messages.get(this, "no_next_lvl");
+				}
+			}
+		}
+		return desc;
+	}
+
 	public class cloakRecharge extends ArtifactBuff{
 		@Override
 		public boolean act() {

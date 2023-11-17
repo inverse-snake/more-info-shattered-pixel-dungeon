@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
 public class Flow extends Armor.Glyph {
@@ -40,4 +41,9 @@ public class Flow extends Armor.Glyph {
 		return BLUE;
 	}
 
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 2f + 0.5f*armorLevel));
+	}
 }

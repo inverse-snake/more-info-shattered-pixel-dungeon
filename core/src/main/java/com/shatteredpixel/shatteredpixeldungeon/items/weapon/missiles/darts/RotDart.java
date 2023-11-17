@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 
@@ -49,7 +50,12 @@ public class RotDart extends TippedDart {
 		
 		return super.proc(attacker, defender, damage);
 	}
-	
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", Dungeon.scalingDepth(), Dungeon.scalingDepth()/3);
+	}
+
 	@Override
 	public float durabilityPerUse() {
 		return 20f;

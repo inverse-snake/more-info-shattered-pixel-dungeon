@@ -230,6 +230,14 @@ public class WandOfLivingEarth extends DamageWand {
 		particle.y += dst;
 	}
 
+	@Override
+	public String statsDesc() {
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", min(), max(), 8 + buffedLvl()*4);
+		else
+			return Messages.get(this, "stats_desc", min(0), max(0), 8);
+	}
+
 	public static class RockArmor extends Buff {
 
 		{

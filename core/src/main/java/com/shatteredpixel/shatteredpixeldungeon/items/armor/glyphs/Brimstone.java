@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
 public class Brimstone extends Armor.Glyph {
 
-	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
+	private static final ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {

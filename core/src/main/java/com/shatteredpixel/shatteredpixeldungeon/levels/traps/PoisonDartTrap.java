@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.PoisonDart;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -126,5 +127,10 @@ public class PoisonDartTrap extends Trap {
 			}
 
 		});
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", poisonAmount());
 	}
 }

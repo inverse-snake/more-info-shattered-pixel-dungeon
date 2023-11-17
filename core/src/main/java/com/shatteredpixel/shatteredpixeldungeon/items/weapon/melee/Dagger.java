@@ -80,6 +80,11 @@ public class Dagger extends MeleeWeapon {
 	}
 
 	@Override
+	public String statsInfo() {
+		return sneakyWeaponStats(this, 0.75f);
+	}
+
+	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}

@@ -26,12 +26,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 public class Repulsion extends Armor.Glyph {
 
-	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
+	private static final ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
@@ -57,6 +58,12 @@ public class Repulsion extends Armor.Glyph {
 		}
 		
 		return damage;
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (armorLevel+1f)/(armorLevel+5f)), 2);
 	}
 
 	@Override

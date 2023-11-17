@@ -27,12 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.noosa.audio.Sample;
 
 public class Camouflage extends Armor.Glyph {
 
-	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x448822 );
+	private static final ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x448822 );
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
@@ -45,6 +46,11 @@ public class Camouflage extends Armor.Glyph {
 		if ( Dungeon.level.heroFOV[ch.pos] ) {
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc", Math.round(3 + armorLevel/2f));
 	}
 
 	@Override

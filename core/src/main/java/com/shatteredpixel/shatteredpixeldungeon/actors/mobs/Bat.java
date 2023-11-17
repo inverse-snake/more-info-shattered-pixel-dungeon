@@ -76,8 +76,8 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public float lootChance(){
-		return super.lootChance() * ((7f - Dungeon.LimitedDrops.BAT_HP.count) / 7f);
+	public float lootChanceModifier(){
+		return ((7f - Dungeon.LimitedDrops.BAT_HP.count) / 7f);
 	}
 	
 	@Override

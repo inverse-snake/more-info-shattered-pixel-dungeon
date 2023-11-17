@@ -36,13 +36,18 @@ public class RingOfSharpshooting extends Ring {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
 					soloBuffedBonus(), Messages.decimalFormat("#.##", 100f * (Math.pow(1.2, soloBonus()) - 1f)));
+			if (cursed && cursedKnown) {
+				info += "\n" + Messages.get(this, "remove_curse", (buffedLvl() + 1),
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.2, level() + 1) - 1f)));
+			}
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Aim.class)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
 						combinedBuffedBonus(Dungeon.hero, Aim.class), Messages.decimalFormat("#.##", 100f * (Math.pow(1.2, getBonus(Dungeon.hero, Aim.class)) - 1f)));
 			}
-			return info;
+			return info  + "\n\n" + Messages.get(this, "each_upgrade");
 		} else {
-			return Messages.get(this, "typical_stats", 1, Messages.decimalFormat("#.##", 20f));
+			return Messages.get(this, "typical_stats", 1, Messages.decimalFormat("#.##", 20f))
+					+ "\n\n" + Messages.get(this, "each_upgrade");
 		}
 	}
 	

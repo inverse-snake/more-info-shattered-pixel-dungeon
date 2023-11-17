@@ -173,7 +173,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	@Override
 	public int icon() {
 		if (level < HUNGRY) {
-			return BuffIndicator.NONE;
+			return BuffIndicator.HUNGER;
 		} else if (level < STARVING) {
 			return BuffIndicator.HUNGER;
 		} else {
@@ -183,7 +183,9 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	@Override
 	public String name() {
-		if (level < STARVING) {
+		if (level < HUNGRY) {
+			return Messages.get(this, "satiety");
+		} else if (level < STARVING) {
 			return Messages.get(this, "hungry");
 		} else {
 			return Messages.get(this, "starving");
@@ -193,15 +195,29 @@ public class Hunger extends Buff implements Hero.Doom {
 	@Override
 	public String desc() {
 		String result;
-		if (level < STARVING) {
+		if (level < HUNGRY) {
+			result = Messages.get(this, "desc_intro_satiety");
+		} else if (level < STARVING) {
 			result = Messages.get(this, "desc_intro_hungry");
 		} else {
 			result = Messages.get(this, "desc_intro_starving");
 		}
 
+		if (level < STARVING) {
+			result += " " + Messages.get(this, "until_starvation", ((int)STARVING) - hunger());
+		}
+
 		result += Messages.get(this, "desc");
 
 		return result;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		if (level < STARVING) {
+			return Math.max(0, (STARVING - level) / STARVING);
+		}
+		return super.iconFadePercent();
 	}
 
 	@Override

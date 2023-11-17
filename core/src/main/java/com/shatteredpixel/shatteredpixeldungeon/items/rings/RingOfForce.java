@@ -115,9 +115,31 @@ public class RingOfForce extends Ring {
 		if (isIdentified()) {
 			int level = soloBuffedBonus();
 			String info = Messages.get(this, "stats", min(level, tier), max(level, tier), level);
+			int level2 = level + 1;
+			if (cursed && level2 > 0) {
+				level2 = 0;
+			}
+			if (cursed && cursedKnown) {
+				info += "\n" + Messages.get(this, "remove_curse",
+						min(buffedLvl() + 1, tier),
+						max(buffedLvl() + 1, tier),
+						buffedLvl() + 1);
+			}
+			info += "\n" + Messages.get(this, "next_upgrade",
+					min(level2, tier) - min(level, tier),
+					max(level2, tier) - max(level, tier)
+					);
+			float tier2 = tier(Dungeon.hero.STR() + 1);
+			info += "\n" + Messages.get(this, "next_str",
+					min(level, tier2) - min(level, tier),
+					max(level, tier2) - max(level, tier)
+			);
+			if (Dungeon.hero.STR() <= 18) {
+				info += "\n" + Messages.get(this, "str_warning");
+			}
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Force.class)){
 				level = combinedBuffedBonus(Dungeon.hero, Force.class);
-				info += "\n\n" + Messages.get(this, "combined_stats", min(level, tier), max(level, tier), level);
+				info += "\n" + Messages.get(this, "combined_stats", min(level, tier), max(level, tier), level);
 			}
 			return info;
 		} else {

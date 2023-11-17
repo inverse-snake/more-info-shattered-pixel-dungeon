@@ -184,7 +184,7 @@ public class AlchemistsToolkit extends Artifact {
 		if (isEquipped(Dungeon.hero)) {
 			if (cursed)                 result += "\n\n" + Messages.get(this, "desc_cursed");
 			else if (warmUpDelay > 0)   result += "\n\n" + Messages.get(this, "desc_warming");
-			else                        result += "\n\n" + Messages.get(this, "desc_hint");
+			else                        result += "\n\n" + Messages.get(this, "desc_hint", 2 + level());
 		}
 		
 		return result;

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -50,6 +51,12 @@ public class Thorns extends Armor.Glyph {
 		}
 
 		return damage;
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc", 4 + armorLevel,
+				Messages.decimalFormat("#.##", 100f * (armorLevel+2f)/(armorLevel+12f)));
 	}
 
 	@Override

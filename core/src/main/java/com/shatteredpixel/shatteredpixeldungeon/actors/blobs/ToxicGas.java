@@ -64,7 +64,7 @@ public class ToxicGas extends Blob implements Hero.Doom {
 	
 	@Override
 	public String tileDesc() {
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc", 1 + Dungeon.scalingDepth()/5);
 	}
 	
 	@Override

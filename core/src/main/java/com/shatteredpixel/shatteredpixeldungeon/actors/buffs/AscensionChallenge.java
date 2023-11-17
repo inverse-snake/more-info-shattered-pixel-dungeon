@@ -356,7 +356,8 @@ public class AscensionChallenge extends Buff {
 			if (stacks >= 2)    desc += "\n" + Messages.get(this, "desc_beckon");
 			if (stacks >= 4)    desc += "\n" + Messages.get(this, "desc_haste");
 			if (stacks >= 6)    desc += "\n" + Messages.get(this, "desc_slow");
-			if (stacks >= 8)    desc += "\n" + Messages.get(this, "desc_damage");
+			if (stacks >= 8)    desc += "\n" + Messages.get(this, "desc_damage",
+					Messages.decimalFormat("#.##", (stacks-4)/4f));
 
 		}
 

@@ -52,6 +52,19 @@ public class Chasm implements Hero.Doom {
 
 	public static boolean jumpConfirmed = false;
 	private static int heroPos;
+
+	private static String jumpMsg() {
+		Hero hero = Dungeon.hero;
+		String jump = Messages.get(Chasm.class, "jump",
+				Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))),
+				hero.HP / 2, Math.max(hero.HT / 4, hero.HP / 2)
+				);
+		FeatherFall.FeatherBuff b = hero.buff(FeatherFall.FeatherBuff.class);
+		if (b != null) {
+			jump += "\n" + Messages.get(Chasm.class, "jump_feather");
+		}
+		return jump;
+	}
 	
 	public static void heroJump( final Hero hero ) {
 		heroPos = hero.pos;
@@ -61,7 +74,7 @@ public class Chasm implements Hero.Doom {
 				GameScene.show(
 						new WndOptions( new Image(Dungeon.level.tilesTex(), 176, 16, 16, 16),
 								Messages.get(Chasm.class, "chasm"),
-								Messages.get(Chasm.class, "jump"),
+								jumpMsg(),
 								Messages.get(Chasm.class, "yes"),
 								Messages.get(Chasm.class, "no") ) {
 

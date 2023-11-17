@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -35,7 +36,7 @@ import com.watabou.utils.Random;
 
 public class Entanglement extends Glyph {
 	
-	private static ItemSprite.Glowing BROWN = new ItemSprite.Glowing( 0x663300 );
+	private static final ItemSprite.Glowing BROWN = new ItemSprite.Glowing( 0x663300 );
 	
 	@Override
 	public int proc(Armor armor, Char attacker, final Char defender, final int damage ) {
@@ -54,6 +55,11 @@ public class Entanglement extends Glyph {
 		}
 
 		return damage;
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc", 5 + 2 * armorLevel);
 	}
 
 	@Override

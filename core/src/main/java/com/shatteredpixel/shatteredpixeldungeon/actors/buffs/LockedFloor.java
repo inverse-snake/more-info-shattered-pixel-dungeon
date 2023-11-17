@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -70,6 +71,17 @@ public class LockedFloor extends Buff {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		left = bundle.getFloat( LEFT );
+	}
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc") + "\n\n";
+		if (regenOn()) {
+			desc += Messages.get(this, "regen_left", (int)left);
+		} else {
+			desc += Messages.get(this, "no_regen");
+		}
+		return desc;
 	}
 
 	@Override

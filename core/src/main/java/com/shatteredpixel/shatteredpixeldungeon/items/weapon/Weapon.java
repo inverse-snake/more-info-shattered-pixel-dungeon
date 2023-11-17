@@ -99,8 +99,8 @@ abstract public class Weapon extends KindOfWeapon {
 	public Augment augment = Augment.NONE;
 	
 	private static final int USES_TO_ID = 20;
-	private float usesLeftToID = USES_TO_ID;
-	private float availableUsesToID = USES_TO_ID/2f;
+	protected float usesLeftToID = USES_TO_ID;
+	protected float availableUsesToID = USES_TO_ID/2f;
 	
 	public Enchantment enchantment;
 	public boolean enchantHardened = false;
@@ -175,6 +175,13 @@ abstract public class Weapon extends KindOfWeapon {
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
 	}
+
+	protected static float accuracyPercent(int str, int required) { //for descriptions only
+		if (required <= str) {
+			return 0f;
+		}
+		return 100f * (float) (1f - 1f / Math.pow(1.5f, required - str));
+	}
 	
 	@Override
 	public float accuracyFactor(Char owner, Char target) {
@@ -193,7 +200,14 @@ abstract public class Weapon extends KindOfWeapon {
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
-	
+
+	protected static float speedPercent(int str, int required) { //for descriptions only
+		if (required <= str) {
+			return 0f;
+		}
+		return 100f * (float) (1f - 1f / Math.pow(1.2f, required - str));
+	}
+
 	@Override
 	public float delayFactor( Char owner ) {
 		return baseDelay(owner) * (1f/speedMultiplier(owner));
@@ -430,6 +444,10 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 
 		public String desc() {
+			return desc(0);
+		}
+
+		public String desc(int weaponLevel) {
 			return Messages.get(this, "desc");
 		}
 

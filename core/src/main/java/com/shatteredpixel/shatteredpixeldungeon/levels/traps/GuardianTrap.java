@@ -69,6 +69,11 @@ public class GuardianTrap extends Trap {
 
 	}
 
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", (scalingDepth() - 5)/5);
+	}
+
 	public static class Guardian extends Statue {
 
 		{

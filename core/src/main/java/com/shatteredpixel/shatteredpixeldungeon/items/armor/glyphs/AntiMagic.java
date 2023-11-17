@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -65,7 +66,7 @@ import java.util.HashSet;
 
 public class AntiMagic extends Armor.Glyph {
 
-	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x88EEFF );
+	private static final ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x88EEFF );
 	
 	public static final HashSet<Class> RESISTS = new HashSet<>();
 	static {
@@ -128,6 +129,11 @@ public class AntiMagic extends Armor.Glyph {
 		return Random.NormalIntRange(
 				Math.round(level * genericProcChanceMultiplier(ch)),
 				Math.round((3 + (level*1.5f)) * genericProcChanceMultiplier(ch)));
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc", armorLevel, Math.round(3 + (armorLevel * 1.5f)));
 	}
 
 	@Override

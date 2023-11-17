@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 
@@ -44,5 +45,10 @@ public class CorrosionTrap extends Trap {
 
 		GameScene.add(corrosiveGas);
 
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 80 + 5 * scalingDepth());
 	}
 }

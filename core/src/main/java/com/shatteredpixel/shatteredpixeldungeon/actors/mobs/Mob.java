@@ -846,9 +846,7 @@ public abstract class Mob extends Char {
 		}
 	}
 
-	public float lootChance(){
-		float lootChance = this.lootChance;
-
+	public float dropBonus() {
 		float dropBonus = RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 
 		Talent.BountyHunterTracker bhTracker = Dungeon.hero.buff(Talent.BountyHunterTracker.class);
@@ -862,7 +860,15 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		return lootChance * dropBonus;
+		return dropBonus;
+	}
+
+	public float lootChanceModifier() {
+		return 1f;
+	}
+
+	public float lootChance(){
+		return this.lootChance * dropBonus() * lootChanceModifier();
 	}
 	
 	public void rollToDropLoot(){
@@ -952,10 +958,44 @@ public abstract class Mob extends Char {
 	public String info(){
 		String desc = description();
 
+		if (alignment == Alignment.NEUTRAL) {
+			return desc;
+		}
+
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.name()) + "_\n" + b.desc();
 		}
 
+		int sh = shielding();
+		if (sh == 0) {
+			desc += "\n\n" + Messages.get(this, "hp_info", HP, HT);
+		} else {
+			desc += "\n\n" + Messages.get(this, "hp_info_shield", HP, HT, sh);
+		}
+		desc += "\n" + Messages.get(this, "eva_info", defenseSkill);
+		if (alignment == Alignment.ENEMY) {
+			if ((EXP > 0 || this instanceof Swarm) && maxLvl >= Dungeon.hero.lvl) {
+				desc += "\n" + Messages.get(this, "exp_info", EXP, maxLvl);
+			}
+			if ((lootChance > 0 || this instanceof Swarm) && maxLvl + 2 >= Dungeon.hero.lvl) {
+				desc += "\n" + Messages.get(this, "loot_info",
+						//Messages.decimalFormat("#.##", this.lootChance * lootChanceModifier() * 100f),
+						//This version was rejected because it could be used to deduce stuff:
+						//("Someone dies in distance" and the enemy you fight suddenly gets less loot chance
+						// = the dead enemy was of the same type and dropped something,
+						//   time to find and collect it!)
+						Messages.decimalFormat("#.##", this.lootChance * 100f),
+						//Much less informative for limited drops, but whatever
+						//Unless evan adds loot chance to the descriptions in the base ShPD I'm not changing this
+						Messages.get(this, "loot_name"),
+						maxLvl + 2
+						);
+			}
+		}
+		if (AscensionChallenge.statModifier(this) != 1f) {
+			desc += "\n" + Messages.get(this, "ascent_info",
+					Math.round((AscensionChallenge.statModifier(this) - 1) * 100f));
+		}
 		return desc;
 	}
 	

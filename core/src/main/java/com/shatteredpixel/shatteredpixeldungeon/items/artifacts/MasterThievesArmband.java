@@ -241,7 +241,22 @@ public class MasterThievesArmband extends Artifact {
 			if (cursed){
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
 			} else {
-				desc += "\n\n" + Messages.get(this, "desc_worn");
+				float chargePerExp = 3f / Dungeon.hero.maxExp();
+				float expPerCharge = 1f / chargePerExp;
+				desc += "\n" + Messages.get(this, "desc_worn0",
+						Messages.decimalFormat("#.##", expPerCharge));
+				if (charge < chargeCap) {
+					desc += "\n" + Messages.get(this, "desc_nextcharge",
+							Messages.decimalFormat("#.##", expPerCharge * (1f - partialCharge)));
+				}
+				desc += "\n" + Messages.get(this, "desc_worn",
+						Messages.decimalFormat("#.##", 10 + level()/2f),//gold per charge
+						3 + level() / 2, //duration of debuffs
+						100 + 10 * level()//loot multiplier
+						);
+				if (level() < levelCap) {
+					desc += "\n" + Messages.get(this, "desc_exp", (10 + Math.round(3.33f * level())) - exp);
+				}
 			}
 		}
 

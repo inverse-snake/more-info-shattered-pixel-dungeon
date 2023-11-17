@@ -141,10 +141,10 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public float lootChance() {
+	public float lootChanceModifier() {
 		//each drop makes future drops 1/2 as likely
 		// so loot chance looks like: 1/5, 1/10, 1/20, 1/40, etc.
-		return super.lootChance() * (float)Math.pow(1/2f, Dungeon.LimitedDrops.GUARD_ARM.count);
+		return (float)Math.pow(1/2f, Dungeon.LimitedDrops.GUARD_ARM.count);
 	}
 
 	@Override

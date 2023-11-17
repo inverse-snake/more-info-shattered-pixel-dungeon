@@ -69,7 +69,13 @@ public class Ooze extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dispTurns(left));
+		String s;
+		if (Dungeon.scalingDepth() < 5) {
+			s = Messages.get(this, "dmg_sewers");
+		} else {
+			s = Messages.get(this, "dmg_other", (Dungeon.scalingDepth() == 5) ? 1 : (1 + Dungeon.scalingDepth() / 5));
+		}
+		return Messages.get(this, "desc", s, dispTurns(left));
 	}
 	
 	public void set(float left){

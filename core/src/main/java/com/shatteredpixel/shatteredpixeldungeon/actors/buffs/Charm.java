@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -82,5 +84,15 @@ public class Charm extends FlavourBuff {
 		if (cooldown() <= 0){
 			detach();
 		}
+	}
+
+	@Override
+	public String desc() {
+		Actor ac = Actor.findById(object);
+		String charmObjectName = Messages.get(this, "unknown_object");
+		if (ac instanceof Char) {
+			charmObjectName = ((Char) ac).name();
+		}
+		return Messages.get(this, "desc", dispTurns(), charmObjectName);
 	}
 }

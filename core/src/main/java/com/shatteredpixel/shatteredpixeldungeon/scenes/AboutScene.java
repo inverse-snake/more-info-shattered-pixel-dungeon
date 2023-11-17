@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -62,6 +63,19 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		CreditsBlock mi_mod = new CreditsBlock(true, Window.SHPX_COLOR,
+				"More Info Mod",
+				SnakeSprite.inverseSnakeLogo(),
+				"Developed by: _inverse-snake_\nBased on ShPD's open source",
+				"Mod's source code",
+				"https://github.com/inverse-snake/more-info-shattered-pixel-dungeon");
+		if (landscape()){
+			mi_mod.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+		} else {
+			mi_mod.setRect((w - fullWidth)/2f, 6, 120, 0);
+		}
+		content.add(mi_mod);
+
 		//*** Shattered Pixel Dungeon Credits ***
 
 		String shpxLink = "https://ShatteredPixel.com";
@@ -77,11 +91,13 @@ public class AboutScene extends PixelScene {
 				"ShatteredPixel.com",
 				shpxLink);
 		if (landscape()){
-			shpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+			shpx.setRect((w - fullWidth)/2f - 6, mi_mod.bottom() + 10, 120, 0);
 		} else {
-			shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+			shpx.setRect((w - fullWidth)/2f, mi_mod.bottom() + 10, 120, 0);
 		}
 		content.add(shpx);
+
+		addLine(shpx.top() - 5, content);
 
 		CreditsBlock alex = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Hero Art & Design:",

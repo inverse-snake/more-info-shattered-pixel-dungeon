@@ -366,8 +366,8 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static boolean systemFont(){
-		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
+		return getBoolean(KEY_SYSTEMFONT, false
+				/*(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE)*/);
 	}
 
 	//Connectivity
@@ -392,7 +392,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean updates(){
-		return getBoolean(KEY_UPDATES, true);
+		return false;//getBoolean(KEY_UPDATES, true);
 	}
 
 	public static void betas(boolean value){

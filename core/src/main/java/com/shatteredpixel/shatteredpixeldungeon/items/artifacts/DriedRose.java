@@ -874,7 +874,7 @@ public class DriedRose extends Artifact {
 			add( titlebar );
 			
 			RenderedTextBlock message =
-					PixelScene.renderTextBlock(Messages.get(this, "desc", rose.ghostStrength()), 6);
+					PixelScene.renderTextBlock(Messages.get(this, "desc", rose.ghostStrength(),  20 + 8*rose.level()), 6);
 			message.maxWidth( WIDTH );
 			message.setPos(0, titlebar.bottom() + GAP);
 			add( message );

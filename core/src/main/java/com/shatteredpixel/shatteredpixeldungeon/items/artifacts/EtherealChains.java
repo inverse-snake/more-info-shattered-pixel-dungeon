@@ -293,19 +293,41 @@ public class EtherealChains extends Artifact {
 
 		if (isEquipped( Dungeon.hero )){
 			desc += "\n\n";
-			if (cursed)
+			if (cursed) {
 				desc += Messages.get(this, "desc_cursed");
-			else
+			}
+			else {
 				desc += Messages.get(this, "desc_equipped");
+				if (charge < chargeTarget()) {
+					int expToNext = partialCharge < 1 ? (int)Math.ceil(Dungeon.hero.maxExp() / 6f * (1 - partialCharge)) : 0;
+					desc += "\n" + Messages.get(this, "desc_charge_turns", expToNext,
+							Messages.decimalFormat("#.##",
+									partialCharge < 1 ? (1f - partialCharge) * (40 - (chargeTarget() - charge)*2) : 0f));
+				}
+				else {
+					int expToNext = partialCharge < 1 ? (int)Math.ceil(Dungeon.hero.maxExp() / 6f / ((float)chargeTarget()/charge)
+							* (1 - partialCharge)) : 0;
+					desc += "\n" + Messages.get(this, "desc_charge_noturns", expToNext);
+				}
+				if (level() < levelCap) {
+					int percent_left = 100 + level() * 100 - exp;
+					int exp_left = (int) Math.ceil(Dungeon.hero.maxExp() * percent_left / 100f);
+					desc += "\n" + Messages.get(this, "desc_nextlvl", exp_left);
+				}
+			}
 		}
 		return desc;
+	}
+
+	public int chargeTarget() {
+		return 5+(level()*2);
 	}
 
 	public class chainsRecharge extends ArtifactBuff{
 
 		@Override
 		public boolean act() {
-			int chargeTarget = 5+(level()*2);
+			int chargeTarget = chargeTarget();
 			if (charge < chargeTarget
 					&& !cursed
 					&& target.buff(MagicImmune.class) == null
@@ -336,7 +358,7 @@ public class EtherealChains extends Artifact {
 			exp += Math.round(levelPortion*100);
 
 			//past the soft charge cap, gaining  charge from leveling is slowed.
-			if (charge > 5+(level()*2)){
+			if (charge > chargeTarget()){
 				levelPortion *= (5+((float)level()*2))/charge;
 			}
 			partialCharge += levelPortion*6f;

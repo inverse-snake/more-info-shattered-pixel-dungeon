@@ -187,13 +187,16 @@ public class SandalsOfNature extends Artifact {
 
 		if ( isEquipped ( Dungeon.hero ) ) {
 			desc += "\n\n";
-
+			int nat_level = level() + 1;
+			if (cursed) {
+				nat_level = -1;
+			}
 			if (!cursed) {
-				desc += Messages.get(this, "desc_hint");
+				desc += Messages.get(this, "desc_hint", 25 - (nat_level * 4), 6 - nat_level/2,
+						Messages.decimalFormat("#.##", (3f + level())/6f));
 			} else {
 				desc += Messages.get(this, "desc_cursed");
 			}
-
 		}
 
 		if (curSeedEffect != null){
@@ -202,8 +205,8 @@ public class SandalsOfNature extends Artifact {
 					seedChargeReqs.get(curSeedEffect));
 		}
 
-		if (!seeds.isEmpty()){
-			desc += "\n\n" + Messages.get(this, "desc_seeds", seeds.size());
+		if (level() < levelCap) {
+			desc += "\n\n" + Messages.get(this, "desc_seeds", seeds.size(), 3+(level()*3) - seeds.size());
 		}
 
 		return desc;

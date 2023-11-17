@@ -59,43 +59,43 @@ public enum Catalog {
 	
 	static {
 		for (Class weapon : Generator.Category.WEP_T1.classes){
-			WEAPONS.seen.put( weapon, false);
+			WEAPONS.seen.put( weapon, true);
 		}
 		for (Class weapon : Generator.Category.WEP_T2.classes){
-			WEAPONS.seen.put( weapon, false);
+			WEAPONS.seen.put( weapon, true);
 		}
 		for (Class weapon : Generator.Category.WEP_T3.classes){
-			WEAPONS.seen.put( weapon, false);
+			WEAPONS.seen.put( weapon, true);
 		}
 		for (Class weapon : Generator.Category.WEP_T4.classes){
-			WEAPONS.seen.put( weapon, false);
+			WEAPONS.seen.put( weapon, true);
 		}
 		for (Class weapon : Generator.Category.WEP_T5.classes){
-			WEAPONS.seen.put( weapon, false);
+			WEAPONS.seen.put( weapon, true);
 		}
 
 		for (Class armor : Generator.Category.ARMOR.classes){
-			ARMOR.seen.put( armor, false);
+			ARMOR.seen.put( armor, true);
 		}
 
 		for (Class wand : Generator.Category.WAND.classes){
-			WANDS.seen.put( wand, false);
+			WANDS.seen.put( wand, true);
 		}
 
 		for (Class ring : Generator.Category.RING.classes){
-			RINGS.seen.put( ring, false);
+			RINGS.seen.put( ring, true);
 		}
 
 		for (Class artifact : Generator.Category.ARTIFACT.classes){
-			ARTIFACTS.seen.put( artifact, false);
+			ARTIFACTS.seen.put( artifact, true);
 		}
 
 		for (Class potion : Generator.Category.POTION.classes){
-			POTIONS.seen.put( potion, false);
+			POTIONS.seen.put( potion, true);
 		}
 
 		for (Class scroll : Generator.Category.SCROLL.classes){
-			SCROLLS.seen.put( scroll, false);
+			SCROLLS.seen.put( scroll, true);
 		}
 
 	}

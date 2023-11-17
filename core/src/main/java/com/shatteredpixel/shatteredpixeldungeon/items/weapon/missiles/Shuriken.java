@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Shuriken extends MissileWeapon {
@@ -47,5 +49,13 @@ public class Shuriken extends MissileWeapon {
 	public float delayFactor(Char owner) {
 		if (owner instanceof Hero && ((Hero) owner).justMoved)  return 0;
 		else                                                    return super.delayFactor(owner);
+	}
+
+	@Override
+	public String desc() {
+		if (Dungeon.hero.justMoved) {
+			return super.desc() + " " + Messages.get(this, "desc_instant");
+		}
+		return super.desc();
 	}
 }

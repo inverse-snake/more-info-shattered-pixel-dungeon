@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class GrippingTrap extends Trap {
 
@@ -52,5 +53,10 @@ public class GrippingTrap extends Trap {
 			Wound.hit( pos );
 		}
 
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 2 + scalingDepth()/2);
 	}
 }

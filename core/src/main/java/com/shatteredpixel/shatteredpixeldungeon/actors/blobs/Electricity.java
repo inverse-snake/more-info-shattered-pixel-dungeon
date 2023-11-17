@@ -123,7 +123,7 @@ public class Electricity extends Blob {
 	
 	@Override
 	public String tileDesc() {
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc", 2 + (Dungeon.scalingDepth() - 1) / 5);
 	}
 	
 }

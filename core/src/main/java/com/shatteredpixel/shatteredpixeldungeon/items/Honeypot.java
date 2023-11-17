@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -141,7 +142,12 @@ public class Honeypot extends Item {
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", (2 + Dungeon.scalingDepth()) * 4, 9 + Dungeon.scalingDepth(), 2 + Dungeon.scalingDepth(), (2 + Dungeon.scalingDepth()) * 4 / 10);
+	}
+
 	@Override
 	public int value() {
 		return 30 * quantity;

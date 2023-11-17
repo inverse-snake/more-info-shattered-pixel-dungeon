@@ -389,7 +389,7 @@ public enum Talent {
 	}
 
 	public String desc(boolean metamorphed){
-		if (metamorphed){
+		if (metamorphed || true) {//others need to know what the alternate effect is before wasting a scroll
 			String metaDesc = Messages.get(this, name() + ".meta_desc");
 			if (!metaDesc.equals(Messages.NO_TEXT_FOUND)){
 				return Messages.get(this, name() + ".desc") + "\n\n" + metaDesc;

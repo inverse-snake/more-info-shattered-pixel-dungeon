@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -67,5 +68,8 @@ public class Kunai extends MissileWeapon {
 		}
 		return super.damageRoll(owner);
 	}
-	
+
+	public String desc() {
+		return super.desc() + " " + MeleeWeapon.sneakyWeaponStats(this, 0.6f);
+	}
 }

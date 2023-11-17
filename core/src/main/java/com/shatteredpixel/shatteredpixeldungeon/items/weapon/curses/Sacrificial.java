@@ -21,10 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -57,4 +59,13 @@ public class Sacrificial extends Weapon.Enchantment {
 		return BLACK;
 	}
 
+	@Override
+	public String desc() {
+		Char attacker = Dungeon.hero;
+		float missingPercent = attacker.HP/(float)attacker.HT;
+		float bleedAmt = (float)(Math.pow(missingPercent, 2) * attacker.HT)/8f;
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 10f * Math.min(bleedAmt, 1f)),
+				Messages.decimalFormat("#.##", Math.max(bleedAmt, 1f)));
+	}
 }

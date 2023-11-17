@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PrismaticGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
@@ -59,5 +60,10 @@ public class ScrollOfPrismaticImage extends ExoticScroll {
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 	
 		readAnimation();
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 10 + (int)Math.floor(Dungeon.hero.lvl * 2.5f), 2 + Dungeon.hero.lvl/4, 4 + Dungeon.hero.lvl/2);
 	}
 }

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -57,10 +58,12 @@ public class WandOfBlastWave extends DamageWand {
 		collisionProperties = Ballistica.PROJECTILE;
 	}
 
+	@Override
 	public int min(int lvl){
 		return 1+lvl;
 	}
 
+	@Override
 	public int max(int lvl){
 		return 3+3*lvl;
 	}
@@ -107,6 +110,14 @@ public class WandOfBlastWave extends DamageWand {
 			}
 		}
 		
+	}
+
+	@Override
+	public String statsDesc() {
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", min(), max(), buffedLvl() + 3, buffedLvl() / 2);
+		else
+			return Messages.get(this, "stats_desc", min(0), max(0), 0 + 3, 0 / 2);
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,

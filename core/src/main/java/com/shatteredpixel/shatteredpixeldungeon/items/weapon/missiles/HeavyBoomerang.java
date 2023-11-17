@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -87,8 +89,13 @@ public class HeavyBoomerang extends MissileWeapon {
 		private int returnDepth;
 		
 		private int left;
-		
-		public void setup( HeavyBoomerang boomerang, int thrownPos, int returnPos, int returnDepth){
+
+		@Override
+		public int icon() {
+			return BuffIndicator.PINCUSHION;
+		}
+
+		public void setup(HeavyBoomerang boomerang, int thrownPos, int returnPos, int returnDepth){
 			this.boomerang = boomerang;
 			this.thrownPos = thrownPos;
 			this.returnPos = returnPos;
@@ -156,7 +163,15 @@ public class HeavyBoomerang extends MissileWeapon {
 			spend( TICK );
 			return true;
 		}
-		
+
+		@Override
+		public String desc() {
+			if (returnDepth == Dungeon.depth) {
+				return Messages.get(this, "desc_here", left);
+			}
+			return Messages.get(this, "desc_otherdepth", returnDepth, left);
+		}
+
 		private static final String BOOMERANG = "boomerang";
 		private static final String THROWN_POS = "thrown_pos";
 		private static final String RETURN_POS = "return_pos";

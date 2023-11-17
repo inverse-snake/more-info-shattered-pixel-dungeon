@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.noosa.Visual;
@@ -63,6 +64,12 @@ public class Lucky extends Weapon.Enchantment {
 
 	public static void showFlare( Visual vis ){
 		RingOfWealth.showFlareForBonusDrop(vis);
+	}
+
+	@Override
+	public String desc(int level) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (level+4f)/(level+40f)));
 	}
 
 	@Override

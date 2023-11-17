@@ -29,25 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class RingOfEnergy extends Ring {
+public class RingOfEnergy extends ExponentialRing {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_ENERGY;
 	}
 
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Energy.class)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, combinedBuffedBonus(Dungeon.hero, Energy.class)) - 1f)));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats",
-					Messages.decimalFormat("#.##", 15f));
-		}
+	public RingOfEnergy() {
+		super(1.15f);
 	}
 	
 	@Override

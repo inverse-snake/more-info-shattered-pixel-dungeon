@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -57,7 +58,14 @@ public class Blocking extends Weapon.Enchantment {
 		
 		return damage;
 	}
-	
+
+	@Override
+	public String desc(int level) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (level+4f)/(level+40f)),
+				2 + level);
+	}
+
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return BLUE;

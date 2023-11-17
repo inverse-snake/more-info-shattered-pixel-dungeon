@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.BArray;
 import com.watabou.noosa.audio.Sample;
@@ -72,6 +73,13 @@ public class Shocking extends Weapon.Enchantment {
 		return damage;
 
 	}
+
+	@Override
+	public String desc(int level) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (level+1f)/(level+4f)));
+	}
+
 
 	@Override
 	public ItemSprite.Glowing glowing() {

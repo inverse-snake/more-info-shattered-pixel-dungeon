@@ -85,6 +85,15 @@ public class PotionOfHealing extends Potion {
 	}
 
 	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc", (int) (0.8f * Dungeon.hero.HT + 14));
+		if (Dungeon.isChallenged(Challenges.NO_HEALING)) {
+			desc += "\n" + Messages.get(this, "desc_pharma", 4 + Dungeon.hero.lvl/2);
+		}
+		return desc;
+	}
+
+	@Override
 	public int value() {
 		return isKnown() ? 30 * quantity : super.value();
 	}

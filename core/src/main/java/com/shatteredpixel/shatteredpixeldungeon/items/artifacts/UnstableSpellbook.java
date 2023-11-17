@@ -260,6 +260,11 @@ public class UnstableSpellbook extends Artifact {
 				if (scrolls.size() > 1)
 					desc += "\n" + "_" + Messages.get(scrolls.get(1), "name") + "_";
 			}
+			if (!cursed && charge < chargeCap) {
+				float chargeTime = 120f - (chargeCap - charge)*5f;
+				desc += "\n" + Messages.get(this, "desc_nextcharge",
+						Messages.decimalFormat("#.##", chargeTime * (1f - partialCharge)));
+			}
 		}
 		
 		if (level() > 0) {

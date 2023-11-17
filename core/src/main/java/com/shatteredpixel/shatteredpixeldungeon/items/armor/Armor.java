@@ -316,6 +316,13 @@ public class Armor extends EquipableItem {
 			return lvl;
 		}
 	}
+
+	private static double evasionPenalty(int requiredStr, int currentStr) { //Evasion divisor for using heavy armor.
+		if (requiredStr <= currentStr) {
+			return 1;
+		}
+		return Math.pow(1.5, requiredStr - currentStr);
+	}
 	
 	public float evasionFactor( Char owner, float evasion ){
 		
@@ -324,23 +331,29 @@ public class Armor extends EquipableItem {
 		}
 		
 		if (owner instanceof Hero){
-			int aEnc = STRReq() - ((Hero) owner).STR();
-			if (aEnc > 0) evasion /= Math.pow(1.5, aEnc);
+			int curStr = ((Hero) owner).STR();
+			evasion /= evasionPenalty(STRReq(), curStr);
 			
 			Momentum momentum = owner.buff(Momentum.class);
 			if (momentum != null){
-				evasion += momentum.evasionBonus(((Hero) owner).lvl, Math.max(0, -aEnc));
+				evasion += momentum.evasionBonus(((Hero) owner).lvl, Math.max(0, curStr - STRReq()));
 			}
 		}
 		
 		return evasion + augment.evasionFactor(buffedLvl());
 	}
+
+	private static double speedPenalty(int requiredStr, int currentStr) { //Speed divisor for using heavy armor.
+		if (requiredStr <= currentStr) {
+			return 1;
+		}
+		return Math.pow(1.2, requiredStr - currentStr);
+	}
 	
 	public float speedFactor( Char owner, float speed ){
 		
 		if (owner instanceof Hero) {
-			int aEnc = STRReq() - ((Hero) owner).STR();
-			if (aEnc > 0) speed /= Math.pow(1.2, aEnc);
+			speed /= speedPenalty(STRReq(), ((Hero) owner).STR());
 		}
 		
 		if (hasGlyph(Swiftness.class, owner)) {
@@ -473,22 +486,39 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", tier, DRMin(), DRMax(), STRReq());
 			
 			if (STRReq() > Dungeon.hero.STR()) {
-				info += " " + Messages.get(Armor.class, "too_heavy");
+				info += " " + Messages.get(Armor.class, "too_heavy",
+						Messages.decimalFormat("#.##", 100f * (1f - 1f / speedPenalty(STRReq(), Dungeon.hero.STR()))),
+						Messages.decimalFormat("#.##", 100f * (1f - 1f / evasionPenalty(STRReq(), Dungeon.hero.STR()))),
+						2 * (STRReq() - Dungeon.hero.STR()));
 			}
+			info += "\n" + Messages.get(Armor.class, "next_upgrade",
+					DRMin(buffedLvl() + 1) - DRMin(buffedLvl()), DRMax(buffedLvl() + 1) - DRMax(buffedLvl()));
 		} else {
 			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", tier, DRMin(0), DRMax(0), STRReq(0));
 
 			if (STRReq(0) > Dungeon.hero.STR()) {
-				info += " " + Messages.get(Armor.class, "probably_too_heavy");
+				info += " " + Messages.get(Armor.class, "probably_too_heavy",
+						Messages.decimalFormat("#.##", 100f * (1f - 1f / speedPenalty(STRReq(0), Dungeon.hero.STR()))),
+						Messages.decimalFormat("#.##", 100f * (1f - 1f / evasionPenalty(STRReq(0), Dungeon.hero.STR()))),
+						2 * (STRReq(0) - Dungeon.hero.STR()));
+			}
+			info += "\n" + Messages.get(Armor.class, "first_upgrade",
+					DRMin(1) - DRMin(0), DRMax(1) - DRMax(0));
+			info += "\n" + Messages.get(Armor.class, "uses_left", (int)Math.ceil(usesLeftToID));
+			float untilNextUse = usesLeftToID % 1;
+			if (availableUsesToID < untilNextUse) {
+				info += " " + Messages.get(Armor.class, "exp_needed");
 			}
 		}
 
 		switch (augment) {
 			case EVASION:
-				info += " " + Messages.get(Armor.class, "evasion");
+				info += " " + Messages.get(Armor.class, "evasion",
+						Messages.decimalFormat("#.##", augment.evasionFactor(buffedLvl())));
 				break;
 			case DEFENSE:
-				info += " " + Messages.get(Armor.class, "defense");
+				info += " " + Messages.get(Armor.class, "defense",
+						Messages.decimalFormat("#.##", -augment.evasionFactor(buffedLvl())));
 				break;
 			case NONE:
 		}
@@ -496,7 +526,11 @@ public class Armor extends EquipableItem {
 		if (glyph != null  && (cursedKnown || !glyph.curse())) {
 			info += "\n\n" +  Messages.capitalize(Messages.get(Armor.class, "inscribed", glyph.name()));
 			if (glyphHardened) info += " " + Messages.get(Armor.class, "glyph_hardened");
-			info += " " + glyph.desc();
+			if (!levelKnown) {
+				info += " " + glyph.desc();
+			} else {
+				info += " " + glyph.desc(buffedLvl());
+			}
 		} else if (glyphHardened){
 			info += "\n\n" + Messages.get(Armor.class, "hardened_no_glyph");
 		}
@@ -677,6 +711,10 @@ public class Armor extends EquipableItem {
 		}
 
 		public String desc() {
+			return desc(0);
+		}
+
+		public String desc(int armorLevel) {
 			return Messages.get(this, "desc");
 		}
 

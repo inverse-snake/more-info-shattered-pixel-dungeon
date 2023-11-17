@@ -23,11 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
 public class Swiftness extends Armor.Glyph {
 
-	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xFFFF00 );
+	private static final ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xFFFF00 );
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
@@ -36,8 +37,12 @@ public class Swiftness extends Armor.Glyph {
 	}
 
 	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc", 20 + 4 * armorLevel);
+	}
+
+	@Override
 	public ItemSprite.Glowing glowing() {
 		return YELLOW;
 	}
-
 }

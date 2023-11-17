@@ -26,13 +26,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Potential extends Glyph {
 	
-	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.6f );
+	private static final ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.6f );
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
@@ -54,6 +55,12 @@ public class Potential extends Glyph {
 		}
 		
 		return damage;
+	}
+
+	@Override
+	public String desc(int armorLevel) {
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", 100f * (armorLevel+1f)/(armorLevel+6f)), 1);
 	}
 
 	@Override

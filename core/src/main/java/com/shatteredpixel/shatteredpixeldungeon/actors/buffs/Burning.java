@@ -215,7 +215,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dispTurns(left));
+		return Messages.get(this, "desc", dispTurns(left), 3 + Dungeon.scalingDepth()/4);
 	}
 
 	@Override

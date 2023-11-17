@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -57,5 +58,10 @@ public class ShockingDart extends TippedDart {
 		}
 		
 		return super.proc(attacker, defender, damage);
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 5 + Dungeon.scalingDepth() / 4, 10 + Dungeon.scalingDepth() / 4);
 	}
 }

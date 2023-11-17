@@ -48,13 +48,18 @@ public class RingOfElements extends Ring {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
 					Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, soloBuffedBonus()))));
+			if (cursed && cursedKnown) {
+				info += "\n" + Messages.get(this, "remove_curse",
+						Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, buffedLvl() + 1))));
+			}
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Resistance.class)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
 						Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, combinedBuffedBonus(Dungeon.hero, Resistance.class)))));
 			}
-			return info;
+			return info + "\n\n" + Messages.get(this, "each_upgrade");
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 17.5f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 17.5f))
+					+ "\n\n" + Messages.get(this, "each_upgrade");
 		}
 	}
 	

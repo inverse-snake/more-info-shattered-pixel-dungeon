@@ -102,7 +102,7 @@ public class Image extends Visual {
 		updateVertices();
 	}
 	
-	protected void updateFrame() {
+	public void updateFrame() {
 		
 		if (flipHorizontal) {
 			vertices[2]		= frame.right;

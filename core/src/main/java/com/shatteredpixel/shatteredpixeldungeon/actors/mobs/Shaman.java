@@ -76,10 +76,10 @@ public abstract class Shaman extends Mob {
 	}
 
 	@Override
-	public float lootChance() {
+	public float lootChanceModifier() {
 		//each drop makes future drops 1/3 as likely
 		// so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
-		return super.lootChance() * (float)Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
+		return (float)Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
 	}
 
 	@Override

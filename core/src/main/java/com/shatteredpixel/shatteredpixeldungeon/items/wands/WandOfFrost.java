@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFireRoom;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -107,6 +108,14 @@ public class WandOfFrost extends DamageWand {
 		} else {
 			Dungeon.level.pressCell(bolt.collisionPos);
 		}
+	}
+
+	@Override
+	public String statsDesc() {
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", min(), max(), 2+buffedLvl(), 4+buffedLvl());
+		else
+			return Messages.get(this, "stats_desc", min(0), max(0), 2, 4);
 	}
 
 	@Override

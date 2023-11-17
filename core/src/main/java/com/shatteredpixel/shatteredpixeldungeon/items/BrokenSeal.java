@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -199,6 +200,24 @@ public class BrokenSeal extends Item {
 
 		private Armor armor;
 		private float partialShield;
+
+		@Override
+		public int icon() {
+			return BuffIndicator.DUEL_GUARD;
+		}
+
+		@Override
+		public String desc() {
+			String base = super.desc() + " ";
+			if (shielding() >= maxShield()) {
+				return base + Messages.get(this, "desc_max");
+			}
+			if (!Regeneration.regenOn()) {
+				return base + Messages.get(this, "desc_none");
+			}
+			return base + Messages.get(this, "desc_next",
+					Messages.decimalFormat("#.##", (1 - partialShield) * 30f));
+		}
 
 		@Override
 		public synchronized boolean act() {

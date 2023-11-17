@@ -243,10 +243,20 @@ public class Bomb extends Item {
 	
 	@Override
 	public String desc() {
+		String desc = super.desc();
 		if (fuse == null)
-			return super.desc()+ "\n\n" + Messages.get(this, "desc_fuse");
+			desc += "\n\n" + Messages.get(this, "desc_fuse");
 		else
-			return super.desc() + "\n\n" + Messages.get(this, "desc_burning");
+			desc += "\n\n" + Messages.get(this, "desc_burning");
+		desc += "\n\n" + damage_desc();
+		if (!explodesDestructively()) {
+			desc += "\n" + Messages.get(this, "desc_nondestructive");
+		}
+		return desc;
+	}
+
+	protected String damage_desc() {
+		return Messages.get(this, "desc_damage", 5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
 	}
 
 	private static final String FUSE = "fuse";

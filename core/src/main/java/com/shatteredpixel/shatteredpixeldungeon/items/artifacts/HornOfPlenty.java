@@ -190,7 +190,17 @@ public class HornOfPlenty extends Artifact {
 		if ( isEquipped( Dungeon.hero ) ){
 			if (!cursed) {
 				if (level() < levelCap)
-					desc += "\n\n" +Messages.get(this, "desc_hint");
+					desc += "\n\n" + Messages.get(this, "desc_hint", exp);
+				float hungerPerLevel = Hunger.STARVING * (0.25f + (0.125f * level()));
+				float hungerPerExp = hungerPerLevel / Dungeon.hero.maxExp();
+				float chargesPerExp = hungerPerExp / (Hunger.STARVING / 5f);
+				float expPerCharge = 1f / chargesPerExp;
+				desc += "\n" + Messages.get(this, "desc_moreinfo",
+						Messages.decimalFormat("#.##", expPerCharge));
+				if (charge < chargeCap) {
+					desc += "\n" + Messages.get(this, "desc_nextcharge",
+							Messages.decimalFormat("#.##", expPerCharge * (1f - partialCharge)));
+				}
 			} else {
 				desc += "\n\n" +Messages.get(this, "desc_cursed");
 			}
@@ -249,11 +259,6 @@ public class HornOfPlenty extends Artifact {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-
-		//pre-2.0.0 saves
-		if (partialCharge > 1){
-			partialCharge /= Hunger.STARVING/5f;
-		}
 
 		storedFoodEnergy = bundle.getInt(STORED);
 		

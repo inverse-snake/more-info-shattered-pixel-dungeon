@@ -427,10 +427,15 @@ abstract public class MissileWeapon extends Weapon {
 				STRReq());
 
 		if (STRReq() > Dungeon.hero.STR()) {
-			info += " " + Messages.get(Weapon.class, "too_heavy");
+			info += " " + Messages.get(Weapon.class, "too_heavy",
+					Messages.decimalFormat("#.##", speedPercent(Dungeon.hero.STR(), STRReq())),
+					Messages.decimalFormat("#.##", accuracyPercent(Dungeon.hero.STR(), STRReq())));
 		} else if (Dungeon.hero.STR() > STRReq()){
 			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
 		}
+		info += "\n" + Messages.get(Weapon.class, "next_upgrade",
+				augment.damageFactor(min(buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) + 1)) - augment.damageFactor(min()),
+				augment.damageFactor(max(buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) + 1)) - augment.damageFactor(max()));
 
 		if (enchantment != null && (cursedKnown || !enchantment.curse())){
 			info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());

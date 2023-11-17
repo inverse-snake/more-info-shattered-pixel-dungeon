@@ -190,7 +190,11 @@ public class TimekeepersHourglass extends Artifact {
 			if (!cursed) {
 				if (level() < levelCap )
 					desc += "\n\n" + Messages.get(this, "desc_hint");
-
+				if (charge < chargeCap) {
+					float chargeTime = 90f - (chargeCap - charge)*3f;
+					desc += "\n" + Messages.get(this, "desc_nextcharge",
+							Messages.decimalFormat("#.##", chargeTime * (1f - partialCharge)));
+				}
 			} else
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
 		}

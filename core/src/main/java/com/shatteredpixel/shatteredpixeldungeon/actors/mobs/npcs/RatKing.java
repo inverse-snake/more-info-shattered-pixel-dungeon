@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
+import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -163,5 +164,20 @@ public class RatKing extends NPC {
 		return ((RatKingSprite)sprite).festive ?
 				Messages.get(this, "desc_festive")
 				: super.description();
+	}
+
+	@Override
+	public String info() {
+		String desc = description();
+		//Totally real stats. Trust me
+		desc += "\n\n" + Messages.get(this, "hp_info", 9999, 9999);
+		desc += "\n" + Messages.get(this, "eva_info", INFINITE_EVASION);
+		desc += "\n" + Messages.get(this, "exp_info", 9999, 99);
+		desc += "\n" + Messages.get(this, "loot_info",
+				Messages.decimalFormat("#.##", 100f),
+				Messages.get(Amulet.class, "name"),
+				99 + 2
+		);
+		return desc;
 	}
 }

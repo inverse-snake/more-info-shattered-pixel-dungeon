@@ -21,11 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfEarthenArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ElixirOfArcaneArmor extends Elixir {
@@ -37,6 +39,11 @@ public class ElixirOfArcaneArmor extends Elixir {
 	@Override
 	public void apply(Hero hero) {
 		Buff.affect(hero, ArcaneArmor.class).set(5 + hero.lvl/2, 80);
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 5 + Dungeon.hero.lvl/2);
 	}
 	
 	@Override

@@ -71,7 +71,14 @@ public class ScrollOfRetribution extends Scroll {
 		readAnimation();
 		
 	}
-	
+
+	@Override
+	public String desc() {
+		float hpPercent = (Dungeon.hero.HT - Dungeon.hero.HP)/(float)(Dungeon.hero.HT);
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", Math.min( 4f, 4.45f*hpPercent) * 22.5f));
+	}
+
 	@Override
 	public int value() {
 		return isKnown() ? 40 * quantity : super.value();

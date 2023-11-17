@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -354,62 +355,134 @@ public class MeleeWeapon extends Weapon {
 	
 	@Override
 	public String info() {
+		String nn = "\n\n";
+		if (Dungeon.hero.heroClass == HeroClass.DUELIST || this instanceof MagesStaff) {
+			nn = "\n";//Some texts do not fit otherwise
+		}
 
 		String info = desc();
 
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
+			info += nn + Messages.get(MeleeWeapon.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
 			if (STRReq() > Dungeon.hero.STR()) {
-				info += " " + Messages.get(Weapon.class, "too_heavy");
+				info += " " + Messages.get(Weapon.class, "too_heavy",
+						Messages.decimalFormat("#.##", speedPercent(Dungeon.hero.STR(), STRReq())),
+						Messages.decimalFormat("#.##", accuracyPercent(Dungeon.hero.STR(), STRReq())));
 			} else if (Dungeon.hero.STR() > STRReq()){
 				info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
 			}
+			info += "\n" + Messages.get(Weapon.class, "next_upgrade",
+					augment.damageFactor(min(buffedLvl() + 1)) - augment.damageFactor(min()),
+					augment.damageFactor(max(buffedLvl() + 1)) - augment.damageFactor(max()));
 		} else {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
+			info += nn + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
 			if (STRReq(0) > Dungeon.hero.STR()) {
-				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
+				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy",
+						Messages.decimalFormat("#.##",speedPercent(Dungeon.hero.STR(), STRReq(0))),
+						Messages.decimalFormat("#.##",accuracyPercent(Dungeon.hero.STR(), STRReq(0))));
+			}
+			info += "\n" + Messages.get(Weapon.class, "first_upgrade",
+					augment.damageFactor(min(1)) - augment.damageFactor(min(0)),
+					augment.damageFactor(max(1)) - augment.damageFactor(max(0)));
+			info += "\n" + Messages.get(Weapon.class, "uses_left", (int)Math.ceil(usesLeftToID));
+			float untilNextUse = usesLeftToID % 1;
+			if (availableUsesToID < untilNextUse) {
+				info += " " + Messages.get(Weapon.class, "exp_needed");
 			}
 		}
 
 		String statsInfo = statsInfo();
-		if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
+		boolean unusual = !statsInfo.isEmpty() || ACC != 1f || DLY != 1f || RCH != 1 || augment != Augment.NONE;
+		if (unusual) {
+			info += "\n";
+		}
+		boolean infoAdded = false;
+		if (!statsInfo.equals("")) {
+			info += statsInfo;
+			infoAdded = true;
+		}
+		if (ACC != 1f) {
+			if (infoAdded) {
+				info += " ";
+			}
+			infoAdded = true;
+			if (ACC > 1f) {
+				info += Messages.get(MeleeWeapon.class, "accurate", Math.round((ACC - 1) * 100f));
+			} else {
+				info += Messages.get(MeleeWeapon.class, "inaccurate", Math.round((1 - ACC) * 100f));
+			}
+		}
+		if (DLY != 1f) {
+			if (infoAdded) {
+				info += " ";
+			}
+			infoAdded = true;
+			if (DLY > 1f) {
+				info += Messages.get(MeleeWeapon.class, "slow", Math.round((1 - 1 / DLY) * 100f));
+			} else {
+				info += Messages.get(MeleeWeapon.class, "fast", Math.round((1 / DLY - 1)  * 100f));
+			}
+		}
+		if (RCH != 1) {
+			if (infoAdded) {
+				info += " ";
+			}
+			infoAdded = true;
+			info += Messages.get(MeleeWeapon.class, "reach", RCH);
+		}
 
+
+		if (infoAdded && augment != Augment.NONE) {
+			info += " ";
+		}
 		switch (augment) {
 			case SPEED:
-				info += " " + Messages.get(Weapon.class, "faster");
+				info += Messages.get(Weapon.class, "faster");
 				break;
 			case DAMAGE:
-				info += " " + Messages.get(Weapon.class, "stronger");
+				info += Messages.get(Weapon.class, "stronger");
 				break;
 			case NONE:
 		}
 
 		if (enchantment != null && (cursedKnown || !enchantment.curse())){
-			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", enchantment.name()));
+			info += nn + Messages.capitalize(Messages.get(Weapon.class, "enchanted", enchantment.name()));
 			if (enchantHardened) info += " " + Messages.get(Weapon.class, "enchant_hardened");
-			info += " " + enchantment.desc();
+			if (!levelKnown) {
+				info += " " + enchantment.desc();
+			} else {
+				info += " " + enchantment.desc(buffedLvl());
+			}
 		} else if (enchantHardened){
-			info += "\n\n" + Messages.get(Weapon.class, "hardened_no_enchant");
+			info += nn + Messages.get(Weapon.class, "hardened_no_enchant");
 		}
 
 		if (cursed && isEquipped( Dungeon.hero )) {
-			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
+			info += nn + Messages.get(Weapon.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
-			info += "\n\n" + Messages.get(Weapon.class, "cursed");
+			info += nn + Messages.get(Weapon.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
 			if (enchantment != null && enchantment.curse()) {
-				info += "\n\n" + Messages.get(Weapon.class, "weak_cursed");
+				info += nn + Messages.get(Weapon.class, "weak_cursed");
 			} else {
-				info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+				info += nn + Messages.get(Weapon.class, "not_cursed");
 			}
 		}
 
 		//the mage's staff has no ability as it can only be gained by the mage
 		if (Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
-			info += "\n\n" + Messages.get(this, "ability_desc");
+			info += nn + Messages.get(this, "ability_desc");
 		}
 		
 		return info;
+	}
+
+	public static String sneakyWeaponStats(Weapon w, float factor) {
+		if (w.levelKnown) {
+			return Messages.get(MeleeWeapon.class, "sneaky", w.min() + Math.round((w.max() - w.min()) * factor));
+		} else {
+			return Messages.get(MeleeWeapon.class, "sneaky", w.min(0) + Math.round((w.max(0) - w.min(0)) * factor));
+		}
 	}
 	
 	public String statsInfo(){

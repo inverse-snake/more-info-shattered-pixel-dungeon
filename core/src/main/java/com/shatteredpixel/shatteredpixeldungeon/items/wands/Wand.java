@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -264,6 +265,19 @@ public abstract class Wand extends Item {
 
 		if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
 			desc += "\n\n" + Messages.get(this, "bmage_desc");
+		}
+
+		if (isIdentified()) {
+			if (curCharges < maxCharges) {
+				desc += "\n\n" + Messages.get(this, "partial_charge",
+						Messages.decimalFormat("#.##", partialCharge * 100f));
+			}
+		} else {
+			desc += "\n" + Messages.get(Wand.class, "uses_left", (int)Math.ceil(usesLeftToID));
+			float untilNextUse = usesLeftToID % 1;
+			if (availableUsesToID < untilNextUse) {
+				desc += " " + Messages.get(Wand.class, "exp_needed");
+			}
 		}
 
 		return desc;

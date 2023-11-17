@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -69,6 +70,14 @@ public class StoneOfIntuition extends InventoryStone {
 
 		GameScene.show( new WndGuess(item));
 		
+	}
+
+	@Override
+	public String desc() {
+		if (Dungeon.hero.buff(IntuitionUseTracker.class) != null) {
+			return super.desc() + "\n\n" + Messages.get(this, "desc_secondtime");
+		}
+		return super.desc();
 	}
 
 	public static class IntuitionUseTracker extends Buff {{ revivePersists = true; }};

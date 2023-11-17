@@ -86,4 +86,9 @@ public class DisintegrationTrap extends Trap {
 		}
 
 	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 30 + scalingDepth(), 50 + scalingDepth());
+	}
 }

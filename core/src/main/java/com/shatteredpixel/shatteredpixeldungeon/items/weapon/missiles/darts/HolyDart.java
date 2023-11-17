@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -60,5 +61,10 @@ public class HolyDart extends TippedDart {
 		}
 		
 		return super.proc(attacker, defender, damage);
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", 10 + Dungeon.scalingDepth()/3, 20 + Dungeon.scalingDepth()/3);
 	}
 }

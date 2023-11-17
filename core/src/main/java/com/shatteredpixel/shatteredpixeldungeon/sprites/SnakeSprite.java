@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 
 public class SnakeSprite extends MobSprite {
@@ -49,5 +50,12 @@ public class SnakeSprite extends MobSprite {
 		
 		play(idle);
 	}
-	
+
+	public static Image inverseSnakeLogo() {
+		Image i = new Image(new SnakeSprite());
+		i.flipVertical = true;
+		i.flipHorizontal = true;
+		i.updateFrame();
+		return i;
+	}
 }

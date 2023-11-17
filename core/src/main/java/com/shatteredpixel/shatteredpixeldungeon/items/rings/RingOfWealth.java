@@ -61,14 +61,24 @@ public class RingOfWealth extends Ring {
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, soloBuffedBonus()) - 1f)));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Wealth.class)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, combinedBuffedBonus(Dungeon.hero, Wealth.class)) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, soloBuffedBonus()) - 1f)), Math.max(0, soloBuffedBonus() / 2));
+			if (cursed && cursedKnown) {
+				info += "\n" + Messages.get(this, "remove_curse",
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, buffedLvl() + 1) - 1f)),
+						(buffedLvl() + 1) / 2);
 			}
-			return info;
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero, Wealth.class)){
+				int level1 = soloBuffedBonus();
+				int level2 = combinedBuffedBonus(Dungeon.hero, Wealth.class) - soloBuffedBonus();
+				int effectiveLevel = Math.max(Math.min(Math.max(level1 + 2, level2 + 2), level1 + level2), 0);
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, combinedBuffedBonus(Dungeon.hero, Wealth.class)) - 1f)),
+						effectiveLevel / 2);
+			}
+			return info + "\n\n" + Messages.get(this, "each_upgrade");
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 20f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 20f))
+					+ "\n\n" + Messages.get(this, "each_upgrade");
 		}
 	}
 

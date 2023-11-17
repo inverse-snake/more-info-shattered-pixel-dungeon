@@ -64,13 +64,17 @@ public class ChaliceOfBlood extends Artifact {
 		return actions;
 	}
 
+	private static int prickDamage(int level) {
+		return 5 + 3*(level*level);
+	}
+
 	@Override
 	public void execute(Hero hero, String action ) {
 		super.execute(hero, action);
 
 		if (action.equals(AC_PRICK)){
 
-			int damage = 5 + 3*(level()*level());
+			int damage = prickDamage(level());
 
 			if (damage > hero.HP*0.75) {
 
@@ -95,7 +99,7 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private void prick(Hero hero){
-		int damage = 5 + 3*(level()*level());
+		int damage = prickDamage(level());
 
 		Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
 		if (armor != null) {
@@ -182,11 +186,14 @@ public class ChaliceOfBlood extends Artifact {
 			else if (level() == 0)
 				desc += Messages.get(this, "desc_1");
 			else if (level() < levelCap)
-				desc += Messages.get(this, "desc_2");
+				desc += Messages.get(this, "desc_2", prickDamage(level()));
 			else
 				desc += Messages.get(this, "desc_3");
+			if (!cursed) {
+				desc += "\n\n" + Messages.get(this, "desc_extra",
+						Messages.decimalFormat("#.##", (10f / (10f - 1.33f - level()*0.667f) - 1f) * 100f));
+			}
 		}
-
 		return desc;
 	}
 
