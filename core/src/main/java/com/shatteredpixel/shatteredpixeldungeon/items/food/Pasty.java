@@ -129,11 +129,11 @@ public class Pasty extends Food {
 	public String info() {
 		switch(holiday){
 			case NONE: default:
-				return Messages.get(this, "pasty_desc");
+				return Messages.get(this, "pasty_desc") + "\n\n" + Messages.get(this, "desc_satiety", Math.round(energy));
 			case HWEEN:
-				return Messages.get(this, "pie_desc");
+				return Messages.get(this, "pie_desc") + "\n\n" + Messages.get(this, "desc_satiety", Math.round(energy));
 			case XMAS:
-				return Messages.get(this, "cane_desc");
+				return Messages.get(this, "cane_desc") + "\n\n" + Messages.get(this, "desc_satiety", Math.round(energy));
 		}
 	}
 	

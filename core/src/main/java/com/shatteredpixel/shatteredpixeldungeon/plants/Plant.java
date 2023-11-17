@@ -223,7 +223,7 @@ public abstract class Plant implements Bundlable {
 
 		@Override
 		public String info() {
-			return Messages.get( Seed.class, "info", desc(), Messages.get(Potion.SeedToPotion.types.get(plantClass), "name") );
+			return Messages.get( Seed.class, "info", desc(), Messages.get(Potion.SeedToPotion.types.get(this.getClass()), "name") );
 		}
 		
 		public static class PlaceHolder extends Seed {
