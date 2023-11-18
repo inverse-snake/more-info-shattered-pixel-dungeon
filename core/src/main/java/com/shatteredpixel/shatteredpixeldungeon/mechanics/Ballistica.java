@@ -44,6 +44,10 @@ public class Ballistica {
 	public static final int STOP_SOLID = 4;     //ballistica will stop on solid terrain
 	public static final int IGNORE_SOFT_SOLID = 8; //ballistica will ignore soft solid terrain, such as doors and webs
 
+	public static final int FOGOFWAR = 16;
+	//ballistica will ignore creatures the hero can't see,
+	//and will treat unknown tiles as walls.
+
 	public static final int PROJECTILE =  	STOP_TARGET	| STOP_CHARS	| STOP_SOLID;
 
 	public static final int MAGIC_BOLT =    STOP_CHARS  | STOP_SOLID;
@@ -58,7 +62,8 @@ public class Ballistica {
 				(params & STOP_TARGET) > 0,
 				(params & STOP_CHARS) > 0,
 				(params & STOP_SOLID) > 0,
-				(params & IGNORE_SOFT_SOLID) > 0);
+				(params & IGNORE_SOFT_SOLID) > 0,
+				(params & FOGOFWAR) > 0);
 
 		if (collisionPos != null) {
 			dist = path.indexOf(collisionPos);
@@ -71,7 +76,7 @@ public class Ballistica {
 		}
 	}
 
-	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain, boolean ignoreSoftSolid ) {
+	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain, boolean ignoreSoftSolid, boolean fogOfWar ) {
 		int w = Dungeon.level.width();
 
 		int x0 = from % w;
@@ -119,22 +124,27 @@ public class Ballistica {
 			if (collisionPos == null
 					&& stopTerrain
 					&& cell != sourcePos
-					&& !Dungeon.level.passable[cell]
+					&& (fogOfWar && !Dungeon.level.mapped[cell] && !Dungeon.level.visited[cell] ||
+					!Dungeon.level.passable[cell]
 					&& !Dungeon.level.avoid[cell]
-					&& Actor.findChar(cell) == null) {
+					&& (fogOfWar && !Dungeon.level.heroFOV[cell] ||
+							Actor.findChar(cell) == null))) {
 				collide(path.get(path.size() - 1));
 			}
 
 			path.add(cell);
 
-			if (collisionPos == null && stopTerrain && cell != sourcePos && Dungeon.level.solid[cell]) {
-				if (ignoreSoftSolid && (Dungeon.level.passable[cell] || Dungeon.level.avoid[cell])) {
+			if (collisionPos == null && stopTerrain && (cell != sourcePos && Dungeon.level.solid[cell]
+					|| fogOfWar && !Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
+				if (ignoreSoftSolid && (Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) &&
+						!(fogOfWar && !Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
 					//do nothing
 				} else {
 					collide(cell);
 				}
 			}
-			if (collisionPos == null && cell != sourcePos && stopChars && Actor.findChar( cell ) != null) {
+			if (collisionPos == null && cell != sourcePos && stopChars && Actor.findChar( cell ) != null
+				&& (!fogOfWar || Dungeon.level.heroFOV[cell])) {
 				collide(cell);
 			}
 			if (collisionPos == null && cell == to && stopTarget){

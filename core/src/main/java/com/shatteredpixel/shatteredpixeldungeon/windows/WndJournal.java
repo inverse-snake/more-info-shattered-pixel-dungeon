@@ -441,7 +441,7 @@ public class WndJournal extends WndTabbed {
 	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 7;
+		private static final int NUM_BUTTONS = 9;
 		
 		private static int currentItemIdx   = 0;
 		
@@ -453,11 +453,13 @@ public class WndJournal extends WndTabbed {
 		private static final int ARTIF_IDX  = 4;
 		private static final int POTION_IDX = 5;
 		private static final int SCROLL_IDX = 6;
+		private static final int SEED_IDX = 7;
+		private static final int DART_IDX = 8;
 		
-		private static final int spriteIndexes[] = {1, 2, 4, 5, 6, 9, 11};
+		private static final int spriteIndexes[] = {1, 2, 4, 5, 6, 9, 11, 10, 3};
 
 		private ScrollingListPane list;
-		
+
 		@Override
 		protected void createChildren() {
 			itemButtons = new RedButton[NUM_BUTTONS];
@@ -532,6 +534,12 @@ public class WndJournal extends WndTabbed {
 			} else if (currentItemIdx == SCROLL_IDX) {
 				itemClasses = new ArrayList<>(Catalog.SCROLLS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
+			} else if (currentItemIdx == SEED_IDX) {
+				itemClasses = new ArrayList<>(Catalog.SEEDS.items());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == DART_IDX) {
+				itemClasses = new ArrayList<>(Catalog.DARTS.items());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else {
 				itemClasses = new ArrayList<>();
 			}

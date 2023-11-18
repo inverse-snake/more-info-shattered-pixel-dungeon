@@ -59,6 +59,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MagesStaff extends MeleeWeapon {
 
@@ -406,7 +407,20 @@ public class MagesStaff extends MeleeWeapon {
 		}
 		return super.enchant(ench);
 	}
-	
+
+	@Override
+	public boolean needsAim() {
+		return true;
+	}
+
+	@Override
+	public List<Integer> aimTiles(int target) {
+		if (wand != null) {
+			return wand.aimTiles(target);
+		}
+		return super.aimTiles(target);
+	}
+
 	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
 
 		@Override

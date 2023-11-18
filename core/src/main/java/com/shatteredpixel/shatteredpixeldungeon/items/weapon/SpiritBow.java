@@ -276,7 +276,12 @@ public class SpiritBow extends Weapon {
 		//level isn't affected by buffs/debuffs
 		return level();
 	}
-	
+
+	@Override
+	public boolean needsAim() {
+		return true;
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return false;

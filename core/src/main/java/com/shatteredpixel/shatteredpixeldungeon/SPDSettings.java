@@ -418,7 +418,28 @@ public class SPDSettings extends GameSettings {
 	public static long newsLastRead(){
 		return getLong(KEY_NEWS_LAST_READ, 0);
 	}
-	
+
+	//Mod-specific
+	public static final String KEY_ALLAIM     = "allaim";
+
+	public static boolean aimWithEverything() {
+		return getBoolean(KEY_ALLAIM, false);
+	}
+
+	public static void aimWithEverything(boolean value) {
+		put(KEY_ALLAIM, value);
+	}
+
+	public static final String KEY_LOGITEMDEPTH = "logitemdepth";
+
+	public static boolean logItemDepth() {
+		return getBoolean(KEY_LOGITEMDEPTH, false);
+	}
+
+	public static void logItemDepth(boolean value) {
+		put(KEY_LOGITEMDEPTH, value);
+	}
+
 	//Window management (desktop only atm)
 	
 	public static final String KEY_WINDOW_WIDTH     = "window_width";

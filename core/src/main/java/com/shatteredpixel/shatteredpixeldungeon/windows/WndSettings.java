@@ -30,8 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
-import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -68,6 +69,8 @@ public class WndSettings extends WndTabbed {
 	private DataTab     data;
 	private AudioTab    audio;
 	private LangsTab    langs;
+
+	private SpecialTab special;
 
 	public static int last_index = 0;
 
@@ -182,15 +185,29 @@ public class WndSettings extends WndTabbed {
 						break;
 				}
 			}
-
 		};
 		add( langsTab );
+
+		special = new SpecialTab();
+		special.setSize(width, 0);
+		height = Math.max(height, special.height());
+		add(special);
+
+		IconTab specialTab = new IconTab(Icons.MI_SETTING.get()){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				special.visible = special.active = value;
+				if (value) last_index = 6;
+			}
+		};
+		add(specialTab);
 
 		resize(width, (int)Math.ceil(height));
 
 		layoutTabs();
 
-		if (tabs.size() == 5 && last_index >= 3){
+		if (tabs.size() == 6 && last_index >= 3){
 			//input tab isn't visible
 			select(last_index-1);
 		} else {
@@ -1277,6 +1294,60 @@ public class WndSettings extends WndTabbed {
 				height = txtTranifex.bottom();
 			}
 
+		}
+	}
+
+	private static class SpecialTab extends Component{
+
+		RenderedTextBlock title;
+		ColorBlock sep1;
+		CheckBox aimEverything;
+		CheckBox logItemDepth;
+
+		@Override
+		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
+			aimEverything = new CheckBox(Messages.get(this, "aimeverything")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.aimWithEverything(checked());
+				}
+			};
+			aimEverything.checked(SPDSettings.aimWithEverything());
+			add(aimEverything);
+
+			logItemDepth = new CheckBox(Messages.get(this, "logitemdepth")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.logItemDepth(checked());
+				}
+			};
+			logItemDepth.checked(SPDSettings.logItemDepth());
+			add(logItemDepth);
+		}
+
+		@Override
+		protected void layout() {
+			title.setPos((width - title.width())/2, y + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 3*GAP;
+
+			float pos;
+			aimEverything.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
+			pos = aimEverything.bottom();
+
+			logItemDepth.setRect(0, aimEverything.bottom() + GAP, width, BTN_HEIGHT);
+			pos = logItemDepth.bottom();
+
+			height = pos;
 		}
 	}
 }

@@ -118,7 +118,8 @@ public enum Icons {
 	KRISTJAN,
 	CUBE_CODE,
 	PURIGRO,
-	ARCNOR;
+	ARCNOR,
+	MI_SETTING;
 
 	public Image get() {
 		return get( this );
@@ -377,7 +378,9 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 160, 96, 27, 30 ) );
 				icon.scale.set(PixelScene.align(0.49f));
 				break;
-
+			case MI_SETTING:
+				icon.frame(icon.texture.uvRectBySize(247, 115, 9,  13));
+				break;
 		}
 		return icon;
 	}

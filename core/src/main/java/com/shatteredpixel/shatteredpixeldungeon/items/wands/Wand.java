@@ -64,6 +64,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Wand extends Item {
 
@@ -561,6 +562,26 @@ public abstract class Wand extends Item {
 	public int collisionProperties(int target){
 		if (cursed)     return Ballistica.MAGIC_BOLT;
 		else            return collisionProperties;
+	}
+
+	@Override
+	public boolean needsAim() {
+		return true;
+	}
+
+	@Override
+	public List<Integer> aimTiles(int target) {
+		int params = collisionProperties;
+		if (cursed && cursedKnown) {
+			params = Ballistica.MAGIC_BOLT;
+		}
+		Ballistica b = new Ballistica(Dungeon.hero.pos, target, params | Ballistica.FOGOFWAR);
+		return b.subPath(1, b.dist);
+	}
+
+	@Override
+	protected boolean notePersists() {
+		return true;
 	}
 
 	public static class PlaceHolder extends Wand {

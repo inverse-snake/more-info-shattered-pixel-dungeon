@@ -63,7 +63,9 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class WandOfRegrowth extends Wand {
 
@@ -243,6 +245,21 @@ public class WandOfRegrowth extends Wand {
 			Buff.affect(attacker, Sungrass.Health.class).boost(healing);
 		}
 
+	}
+
+	@Override
+	public List<Integer> aimTiles(int target) {
+		if (cursed && cursedKnown) {
+			return super.aimTiles(target);
+		}
+		Ballistica b = new Ballistica(Dungeon.hero.pos, target, Ballistica.WONT_STOP);
+		int maxDist = 2 + 2*chargesPerCast();
+
+		ConeAOE tempCone = new ConeAOE( b,
+				maxDist,
+				20 + 10*chargesPerCast(),
+				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET | Ballistica.FOGOFWAR);
+		return Arrays.asList(tempCone.cells.toArray(new Integer[0]));
 	}
 
 	public void fx(Ballistica bolt, Callback callback) {

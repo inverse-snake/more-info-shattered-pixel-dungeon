@@ -48,6 +48,9 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WandOfFireblast extends DamageWand {
 
@@ -160,6 +163,19 @@ public class WandOfFireblast extends DamageWand {
 		protected float procChanceMultiplier(Char attacker) {
 			return Wand.procChanceMultiplier(attacker);
 		}
+	}
+
+	@Override
+	public List<Integer> aimTiles(int target) {
+		if (cursed && cursedKnown) {
+			return super.aimTiles(target);
+		}
+		Ballistica b = new Ballistica(Dungeon.hero.pos, target, Ballistica.WONT_STOP);
+		ConeAOE tempCone = new ConeAOE( b,
+				3 + 2*chargesPerCast(),
+				30 + 20*chargesPerCast(),
+				Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID | Ballistica.FOGOFWAR);
+		return Arrays.asList(tempCone.cells.toArray(new Integer[0]));
 	}
 
 	@Override

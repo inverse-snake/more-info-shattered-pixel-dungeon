@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -38,6 +39,7 @@ public enum Document {
 	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE, false),
 	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE, false),
 
+	MI_MOD_SPECIAL(Icons.SNAKE, true),
 	INTROS(Icons.STAIRS, true),
 	SEWERS_GUARD(ItemSpriteSheet.SEWER_PAGE, true),
 	PRISON_WARDEN(ItemSpriteSheet.PRISON_PAGE, true),
@@ -304,6 +306,10 @@ public enum Document {
 		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("attrition",                 debug ? READ : NOT_FOUND);
 
+		MI_MOD_SPECIAL.pagesStates.put("intro", FOUND);
+		MI_MOD_SPECIAL.pagesStates.put("aiming", FOUND);
+		MI_MOD_SPECIAL.pagesStates.put("notes", FOUND);
+		MI_MOD_SPECIAL.pagesStates.put("evasion", FOUND);
 	}
 	
 	private static final String DOCUMENTS = "documents";

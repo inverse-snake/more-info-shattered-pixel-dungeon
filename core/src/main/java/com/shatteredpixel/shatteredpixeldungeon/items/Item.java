@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -32,7 +34,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
@@ -43,7 +47,11 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.ItemIconTitle;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTextInput;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
@@ -54,6 +62,7 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class Item implements Bundlable {
 
@@ -66,7 +75,8 @@ public class Item implements Bundlable {
 	
 	public static final String AC_DROP		= "DROP";
 	public static final String AC_THROW		= "THROW";
-	
+	public static final String AC_AIM		= "AIM_MI";//MI suffix in case something else gets the same action
+
 	protected String defaultAction;
 	public boolean usesTargeting;
 
@@ -94,6 +104,8 @@ public class Item implements Bundlable {
 
 	// whether an item can be included in heroes remains
 	public boolean bones = false;
+
+	public String notes = "";
 	
 	public static final Comparator<Item> itemComparator = new Comparator<Item>() {
 		@Override
@@ -148,6 +160,10 @@ public class Item implements Bundlable {
 	public void doThrow( Hero hero ) {
 		GameScene.selectCell(thrower);
 	}
+
+	public void doAim( Hero hero ) {
+		GameScene.selectCell(aimer);
+	}
 	
 	public void execute( Hero hero, String action ) {
 
@@ -167,6 +183,10 @@ public class Item implements Bundlable {
 				doThrow(hero);
 			}
 			
+		} else if (action.equals(AC_AIM)) {
+			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {
+				doAim(hero);
+			}
 		}
 	}
 
@@ -194,6 +214,11 @@ public class Item implements Bundlable {
 		if (isSimilar( other )){
 			quantity += other.quantity;
 			other.quantity = 0;
+			if (notes.isEmpty()) {
+				notes = other.notes;
+			} else if (!other.notes.isEmpty()) {
+				notes = notes + "\n=====\n" + other.notes;
+			}
 		}
 		return this;
 	}
@@ -220,6 +245,10 @@ public class Item implements Bundlable {
 
 		if (!container.canHold(this)){
 			return false;
+		}
+
+		if (SPDSettings.logItemDepth() && notes.isEmpty() && !(this instanceof MissileWeapon)) {
+			notes = Messages.get(this, "depth_note", Dungeon.depth);
 		}
 		
 		if (stackable) {
@@ -288,6 +317,7 @@ public class Item implements Bundlable {
 			this.storeInBundle(copy);
 			split.restoreFromBundle(copy);
 			split.quantity(amount);
+			split.notes = "";
 			quantity -= amount;
 			
 			return split;
@@ -319,8 +349,16 @@ public class Item implements Bundlable {
 			
 		}
 	}
+
+	protected boolean notePersists() {
+		return false;
+	}
 	
 	public final Item detachAll( Bag container ) {
+		if (!notePersists()) {
+			notes = "";
+		}
+
 		Dungeon.quickslot.clearItem( this );
 
 		for (Item item : container.items) {
@@ -453,6 +491,16 @@ public class Item implements Bundlable {
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		//do nothing by default
 	}
+
+	public boolean needsAim() {
+		return SPDSettings.aimWithEverything();
+	}
+
+	//A list of all tiles the aim button highlights.
+	public List<Integer> aimTiles(int target) {
+		Ballistica b = new Ballistica(Dungeon.hero.pos, target, Ballistica.PROJECTILE | Ballistica.FOGOFWAR);
+		return b.subPath(1, b.dist);
+	}
 	
 	public static void evoke( Hero hero ) {
 		hero.sprite.emitter().burst( Speck.factory( Speck.EVOKE ), 5 );
@@ -545,6 +593,8 @@ public class Item implements Bundlable {
 	private static final String CURSED_KNOWN	= "cursedKnown";
 	private static final String QUICKSLOT		= "quickslotpos";
 	private static final String KEPT_LOST       = "kept_lost";
+
+	private static final String NOTES = "player_notes";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -557,6 +607,7 @@ public class Item implements Bundlable {
 			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
 		bundle.put( KEPT_LOST, keptThoughLostInvent );
+		bundle.put(NOTES, notes);
 	}
 	
 	@Override
@@ -582,6 +633,22 @@ public class Item implements Bundlable {
 		}
 
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
+		notes = bundle.getString(NOTES);
+	}
+
+	public void editNotes(IconButton toUpdate) {
+		ShatteredPixelDungeon.scene().addToFront(new WndTextInput(Messages.get(this, "note_prompt"), null,
+				notes, -1, true,
+				Messages.get(this, "note_ok"),
+				Messages.get(this, "note_nok")) {
+			@Override
+			public void onSelect(boolean positive, String text) {
+				if (positive) {
+					notes = text;
+					toUpdate.icon(ItemIconTitle.noteIconByText(text));
+				}
+			}
+		});
 	}
 
 	public int targetingPos( Hero user, int dst ){
@@ -670,6 +737,26 @@ public class Item implements Bundlable {
 		@Override
 		public String prompt() {
 			return Messages.get(Item.class, "prompt");
+		}
+	};
+
+	private static final CellSelector.Listener aimer = new CellSelector.Listener() {
+		@Override
+		public void onSelect(Integer cell) {
+			if (cell != null) {
+				List<Integer> cells = curItem.aimTiles(cell);
+				if (cells.isEmpty()) {
+					GLog.w(Messages.get(curItem, "no_aim"));
+				}
+				for (int i : cells) {
+					Dungeon.hero.sprite.parent.add(new TargetedCell(i, 0xFF0000));
+				}
+			}
+		}
+
+		@Override
+		public String prompt() {
+			return Messages.get(Item.class, "aim_prompt");
 		}
 	};
 }

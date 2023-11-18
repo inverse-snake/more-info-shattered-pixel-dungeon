@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.journal;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -40,7 +42,9 @@ public enum Catalog {
 	RINGS,
 	ARTIFACTS,
 	POTIONS,
-	SCROLLS;
+	SCROLLS,
+	SEEDS,
+	DARTS;
 	
 	private LinkedHashMap<Class<? extends Item>, Boolean> seen = new LinkedHashMap<>();
 	
@@ -98,6 +102,11 @@ public enum Catalog {
 			SCROLLS.seen.put( scroll, true);
 		}
 
+		DARTS.seen.put(Dart.class, true);
+		for (Class seed : Generator.Category.SEED.classes) {
+			SEEDS.seen.put(seed, true);
+			DARTS.seen.put(TippedDart.types.get(seed), true);
+		}
 	}
 	
 	public static LinkedHashMap<Catalog, Badges.Badge> catalogBadges = new LinkedHashMap<>();

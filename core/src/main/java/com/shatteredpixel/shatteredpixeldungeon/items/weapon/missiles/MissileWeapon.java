@@ -465,7 +465,12 @@ abstract public class MissileWeapon extends Weapon {
 		
 		return info;
 	}
-	
+
+	@Override
+	public boolean needsAim() {
+		return true;
+	}
+
 	@Override
 	public int value() {
 		return 6 * tier * quantity * (level() + 1);

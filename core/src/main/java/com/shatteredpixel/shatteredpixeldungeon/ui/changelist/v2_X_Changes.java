@@ -38,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TormentedSpiritSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -93,20 +95,27 @@ public class v2_X_Changes {
 		//changes.hardlight(Window.TITLE_COLOR);
 		//changeInfos.add(changes);
 
-		changes = new ChangeInfo("More Info Mod v0.1", false, null);
+		changes = new ChangeInfo("More Info Mod v0.1-0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-		changes.addButton(new ChangeButton(SnakeSprite.inverseSnakeLogo(), "Initial Release",
+		changes.addButton(new ChangeButton(SnakeSprite.inverseSnakeLogo(), "Initial release (mi0.1)",
 				"-A lot of descriptions added\n" +
 				"-All heroes and challenges unlocked by default\n" +
 				"-Info about all recipes and similar available by default\n\n" +
 				"-Gameplay unchanged, to the point of identical seeds resulting in identical runs between this mod and ShPD\n\n" +
-				"-_Not very well tested!_ Contact me if any descriptions are wrong, broken or don't fit on the screen"));
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugfix - 0.1a",
-				"Fixed a ring of energy-related exploit"));
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugfix - 0.1b",
-				"Fixed pasties not displaying satiety values\n\n"+
-						"Fixed associated potions not displaying correctly for seeds"));
+				"-_Not too well tested!_ Contact me if any descriptions are wrong, broken or don't fit on the screen"));
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.STYLUS), "Item notes (mi0.2)",
+				"-Notes can be added to any item using the stylus button\n" +
+						"-Throwing out the item clears the note, except for notes on equipment and wands\n" +
+						"-A setting to have an item's note contain the depth it was obtained on"));
+		changes.addButton(new ChangeButton(new BuffIcon(BuffIndicator.MARK, true), "Aiming (mi0.2)",
+				"-Click the aim button on an item to see its trajectory if thrown (at 0 turn cost, of course)\n" +
+						"-For wands and mage's staff shows the casting trajectory instead\n" +
+						"-Shown trajectories don't account for unknown properties, so an unidentified disintegration wand will reach further than aim button says if it's upgraded\n" +
+						"-By default, only projectiles and wands have this button but since any item can be thrown there is a setting to turn this on for every item"));
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Journal (mi0.2)",
+				"-Some info about the game is now provided in the new section of the journal, which is accessible from the Documents tab\n" +
+						"-The item catalogue section now has a list of all darts and seeds as well"));
 
 		changes = new ChangeInfo("v2.2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);

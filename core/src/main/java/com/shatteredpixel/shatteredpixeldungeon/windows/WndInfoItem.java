@@ -84,6 +84,10 @@ public class WndInfoItem extends Window {
 
 		layoutFields(titlebar, txtInfo);
 	}
+
+	protected IconTitle getIconTitle(Item item) {
+		return new IconTitle(item);
+	}
 	
 	private void fillFields( Item item ) {
 		
@@ -94,7 +98,7 @@ public class WndInfoItem extends Window {
 			color = ItemSlot.DEGRADED;
 		}
 
-		IconTitle titlebar = new IconTitle( item );
+		IconTitle titlebar = getIconTitle(item);
 		titlebar.color( color );
 		
 		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( item.info(), 6 );

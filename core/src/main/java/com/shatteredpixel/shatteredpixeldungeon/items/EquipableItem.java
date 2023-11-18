@@ -159,4 +159,9 @@ public abstract class EquipableItem extends Item {
 	}
 
 	public void activate( Char ch ){}
+
+	@Override
+	protected boolean notePersists() {
+		return true;
+	}
 }
