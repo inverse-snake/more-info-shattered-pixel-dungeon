@@ -190,7 +190,7 @@ public class ChaliceOfBlood extends Artifact {
 			else
 				desc += Messages.get(this, "desc_3");
 			if (!cursed) {
-				desc += "\n\n" + Messages.get(this, "desc_extra",
+				desc += "\n\n" + Messages.get(this, "desc_regen",
 						Messages.decimalFormat("#.##", (10f / (10f - 1.33f - level()*0.667f) - 1f) * 100f));
 			}
 		}
