@@ -39,7 +39,7 @@ public enum Document {
 	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE, false),
 	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE, false),
 
-	MI_MOD_SPECIAL(Icons.SNAKE, true),
+	MI_MOD_SPECIAL(Icons.TALENT, true),
 	INTROS(Icons.STAIRS, true),
 	SEWERS_GUARD(ItemSpriteSheet.SEWER_PAGE, true),
 	PRISON_WARDEN(ItemSpriteSheet.PRISON_PAGE, true),
@@ -310,6 +310,9 @@ public enum Document {
 		MI_MOD_SPECIAL.pagesStates.put("aiming", FOUND);
 		MI_MOD_SPECIAL.pagesStates.put("notes", FOUND);
 		MI_MOD_SPECIAL.pagesStates.put("evasion", FOUND);
+		MI_MOD_SPECIAL.pagesStates.put("traits", FOUND);
+		//MI_MOD_SPECIAL.pagesStates.put("cursed_wands", FOUND); fixme: does not fit on the screen
+		MI_MOD_SPECIAL.pagesStates.put("volume", FOUND);
 	}
 	
 	private static final String DOCUMENTS = "documents";

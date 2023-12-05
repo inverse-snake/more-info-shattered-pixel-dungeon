@@ -68,7 +68,7 @@ public class WndSettings extends WndTabbed {
 	private InputTab    input;
 	private DataTab     data;
 	private AudioTab    audio;
-	private LangsTab    langs;
+	//private LangsTab    langs;
 
 	private SpecialTab special;
 
@@ -159,7 +159,7 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		langs = new LangsTab();
+		/*langs = new LangsTab();
 		langs.setSize(width, 0);
 		height = Math.max(height, langs.height());
 		add( langs );
@@ -186,7 +186,7 @@ public class WndSettings extends WndTabbed {
 				}
 			}
 		};
-		add( langsTab );
+		add( langsTab );*/
 
 		special = new SpecialTab();
 		special.setSize(width, 0);
@@ -198,7 +198,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				special.visible = special.active = value;
-				if (value) last_index = 6;
+				if (value) last_index = 5;
 			}
 		};
 		add(specialTab);
@@ -207,7 +207,7 @@ public class WndSettings extends WndTabbed {
 
 		layoutTabs();
 
-		if (tabs.size() == 6 && last_index >= 3){
+		if (tabs.size() == 5 && last_index >= 2){
 			//input tab isn't visible
 			select(last_index-1);
 		} else {

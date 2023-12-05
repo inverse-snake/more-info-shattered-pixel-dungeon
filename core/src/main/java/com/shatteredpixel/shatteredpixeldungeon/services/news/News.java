@@ -26,6 +26,7 @@ import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
 
@@ -103,7 +104,7 @@ public class News {
 				return Icons.get(Icons.valueOf(article.icon.replace("ICON: ", "")));
 			//"ITEM: <integer constant corresponding to values in ItemSpriteSheet.java>"
 			} else if (article.icon.startsWith("ITEM: ")){
-				return new ItemSprite(Integer.parseInt(article.icon.replace("ITEM: ", "")));
+				return new ItemSprite(ItemSpriteSheet.shpdIconToMyIcon(Integer.parseInt(article.icon.replace("ITEM: ", ""))));
 			//"<asset filename>, <tx left>, <tx top>, <width>, <height>"
 			} else {
 				String[] split = article.icon.split(", ");

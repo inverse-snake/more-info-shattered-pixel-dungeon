@@ -58,6 +58,15 @@ public class Earthroot extends Plant {
 			PixelScene.shake( 1, 0.4f );
 		}
 	}
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc", Armor.blocking());
+		if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
+			desc += "\n\n" + Messages.get(this, "warden_desc", Dungeon.hero.lvl + 5);
+		}
+		return desc;
+	}
 	
 	public static class Seed extends Plant.Seed {
 		{

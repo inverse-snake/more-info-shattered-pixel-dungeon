@@ -84,6 +84,8 @@ public class DwarfKing extends Mob {
 
 		properties.add(Property.BOSS);
 		properties.add(Property.UNDEAD);
+		minArmor = 0;
+		maxArmor = 10;
 	}
 
 	@Override
@@ -94,11 +96,6 @@ public class DwarfKing extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 26;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	private int phase = 1;

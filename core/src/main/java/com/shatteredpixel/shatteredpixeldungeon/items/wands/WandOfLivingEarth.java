@@ -360,23 +360,17 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		@Override
-		public int drRoll() {
-			int dr = super.drRoll();
-			if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-				return dr + Random.NormalIntRange(wandLevel, 2 + wandLevel);
-			} else {
-				return dr + Random.NormalIntRange(wandLevel, 3 + 3 * wandLevel);
-			}
+		public int minArmor() {
+			return wandLevel;
 		}
 
 		@Override
-		public String description() {
+		public int maxArmor() {
 			if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-				return Messages.get(this, "desc", wandLevel, 2 + wandLevel);
+				return 2 + wandLevel;
 			} else {
-				return Messages.get(this, "desc", wandLevel, 3 + 3*wandLevel);
+				return 3 + 3 * wandLevel;
 			}
-			
 		}
 		
 		{

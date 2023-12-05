@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -45,6 +46,7 @@ public class ArmoredStatue extends Statue {
 
 	public ArmoredStatue(){
 		super();
+		armor = new ClothArmor();
 
 		//double HP
 		HP = HT = 30 + Dungeon.depth * 10;

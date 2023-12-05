@@ -35,6 +35,91 @@ public class Bestiary {
 		Random.shuffle(mobs);
 		return mobs;
 	}
+
+	public static  ArrayList<Class<?>> getAllMobs() {
+		//This is very ugly, and will have to be manually redone for any bestiary changes,
+		//but I don't see a better option.
+		ArrayList<Class<?>> mobs = new ArrayList<>();
+		//Sewers:
+		mobs.add(Rat.class);
+		mobs.add(Albino.class);
+		mobs.add(FetidRat.class);
+		mobs.add(Snake.class);
+		mobs.add(Gnoll.class);
+		mobs.add(GnollTrickster.class);
+		mobs.add(Crab.class);
+		mobs.add(GreatCrab.class);
+		mobs.add(Swarm.class);
+		mobs.add(Slime.class);
+		mobs.add(CausticSlime.class);
+		mobs.add(Goo.class);
+		//Prison:
+		mobs.add(Skeleton.class);
+		mobs.add(Thief.class);
+		mobs.add(Bandit.class);
+		mobs.add(Guard.class);
+		mobs.add(DM100.class);
+		mobs.add(Necromancer.class);
+		mobs.add(Necromancer.NecroSkeleton.class);
+		mobs.add(SpectralNecromancer.class);
+		mobs.add(RotLasher.class);
+		mobs.add(RotHeart.class);
+		mobs.add(Elemental.NewbornFireElemental.class);
+		mobs.add(Tengu.class);
+		//Caves:
+		mobs.add(Bat.class);
+		mobs.add(Brute.class);
+		mobs.add(ArmoredBrute.class);
+		mobs.add(Shaman.RedShaman.class);
+		mobs.add(Shaman.BlueShaman.class);
+		mobs.add(Shaman.PurpleShaman.class);
+		mobs.add(Spinner.class);
+		mobs.add(DM200.class);
+		mobs.add(DM201.class);
+		mobs.add(CrystalWisp.class);
+		mobs.add(CrystalGuardian.class);
+		mobs.add(CrystalSpire.class);
+		mobs.add(Pylon.class);
+		mobs.add(DM300.class);
+		//City:
+		mobs.add(Ghoul.class);
+		mobs.add(Elemental.FireElemental.class);
+		mobs.add(Elemental.FrostElemental.class);
+		mobs.add(Elemental.ShockElemental.class);
+		mobs.add(Elemental.ChaosElemental.class);
+		mobs.add(Warlock.class);
+		mobs.add(Monk.class);
+		mobs.add(Senior.class);
+		mobs.add(Golem.class);
+		mobs.add(DwarfKing.class);
+		//Halls:
+		mobs.add(DemonSpawner.class);
+		mobs.add(RipperDemon.class);
+		mobs.add(Succubus.class);
+		mobs.add(Eye.class);
+		mobs.add(Scorpio.class);
+		mobs.add(Acidic.class);
+		mobs.add(YogDzewa.class);
+		mobs.add(YogDzewa.Larva.class);
+		mobs.add(YogFist.BurningFist.class);
+		mobs.add(YogFist.SoiledFist.class);
+		mobs.add(YogFist.RottingFist.class);
+		mobs.add(YogFist.RustedFist.class);
+		mobs.add(YogFist.BrightFist.class);
+		mobs.add(YogFist.DarkFist.class);
+		//Various
+		mobs.add(Wraith.class);
+		mobs.add(TormentedSpirit.class);
+		mobs.add(Piranha.class);
+		mobs.add(PhantomPiranha.class);
+		mobs.add(Mimic.class);
+		mobs.add(GoldenMimic.class);
+		mobs.add(CrystalMimic.class);
+		mobs.add(Statue.class);
+		mobs.add(ArmoredStatue.class);
+		mobs.add(Bee.class);
+		return mobs;
+	}
 	
 	//returns a rotation of standard mobs, unshuffled.
 	private static ArrayList<Class<? extends Mob>> standardMobRotation( int depth ){

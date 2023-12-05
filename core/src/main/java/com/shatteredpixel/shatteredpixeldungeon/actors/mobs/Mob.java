@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
@@ -75,6 +76,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -83,6 +85,7 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -116,6 +119,8 @@ public abstract class Mob extends Char {
 	
 	public int EXP = 1;
 	public int maxLvl = Hero.MAX_LEVEL-1;
+	public int minArmor = 0;
+	public int maxArmor = 0;
 	
 	protected Char enemy;
 	protected int enemyID = -1; //used for save/restore
@@ -708,6 +713,24 @@ public abstract class Mob extends Char {
 		return super.defenseProc(enemy, damage);
 	}
 
+	public int minArmor() {
+		return minArmor;
+	}
+	public int maxArmor() {
+		return maxArmor;
+	}
+	public int armorRoll() {
+		if (maxArmor() == 0) {
+			return 0;
+		}
+		return Random.NormalIntRange(minArmor(), maxArmor());
+	}
+
+	@Override
+	public int drRoll() {
+		return super.drRoll() + armorRoll();
+	}
+
 	@Override
 	public float speed() {
 		return super.speed() * AscensionChallenge.enemySpeedModifier(this);
@@ -958,8 +981,9 @@ public abstract class Mob extends Char {
 	public String info(){
 		String desc = description();
 
-		if (alignment == Alignment.NEUTRAL) {
+		if (alignment == Alignment.NEUTRAL && this instanceof NPC) {
 			return desc;
+			// This is intended to hide shopkeeper/questgiver stats.
 		}
 
 		for (Buff b : buffs(ChampionEnemy.class)){
@@ -973,7 +997,18 @@ public abstract class Mob extends Char {
 			desc += "\n\n" + Messages.get(this, "hp_info_shield", HP, HT, sh);
 		}
 		desc += "\n" + Messages.get(this, "eva_info", defenseSkill);
+		if (maxArmor() != 0 || !Messages.get(this, "armor_info").equals(Messages.get(Mob.class, "armor_info"))) {
+			//Display armor if it's >0 or we have some special case like the statues
+			String armorInfo = Messages.get(this, "armor_info", minArmor(), maxArmor());
+			if (!armorInfo.isEmpty()) {
+				desc += "\n" + armorInfo;
+			}
+		}
 		if (alignment == Alignment.ENEMY) {
+			//Split off swarms have 0 exp and reduced loot chance,
+			//but should be impossible to distinguish,
+			//so they get special lines that ignore the real
+			//exp/loot chance and show the base value instead.
 			if ((EXP > 0 || this instanceof Swarm) && maxLvl >= Dungeon.hero.lvl) {
 				desc += "\n" + Messages.get(this, "exp_info", EXP, maxLvl);
 			}
@@ -995,6 +1030,20 @@ public abstract class Mob extends Char {
 		if (AscensionChallenge.statModifier(this) != 1f) {
 			desc += "\n" + Messages.get(this, "ascent_info",
 					Math.round((AscensionChallenge.statModifier(this) - 1) * 100f));
+		}
+		if (!properties().isEmpty()) {
+			desc += "\n" + Messages.get(this, "traits");
+			boolean first = true;
+			Property[] propertyArray = properties().toArray(new Property[0]);
+			Arrays.sort(propertyArray);//to ensure consistent order
+			for (Property p : propertyArray) {
+				if (first) {
+					first = false;
+				} else {
+					desc += ",";
+				}
+				desc += " " + p.title();
+			}
 		}
 		return desc;
 	}
@@ -1343,6 +1392,28 @@ public abstract class Mob extends Char {
 	
 	public static void clearHeldAllies(){
 		heldAllies.clear();
+	}
+
+	public static class MobItem extends Item {
+		{
+			image = ItemSpriteSheet.SOMETHING;
+		}
+		//The journal displays items, so, uh. Yeah.
+		public final Mob mob;
+
+		public MobItem(Mob mob) {
+			this.mob = mob;
+		}
+
+		@Override
+		public String name() {
+			return mob.name();
+		}
+
+		@Override
+		public String info() {
+			return mob.info();
+		}
 	}
 }
 

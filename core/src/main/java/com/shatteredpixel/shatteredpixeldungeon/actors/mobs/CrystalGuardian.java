@@ -56,6 +56,9 @@ public class CrystalGuardian extends Mob{
 
 		properties.add(Property.INORGANIC);
 		properties.add(Property.MINIBOSS);
+
+		minArmor = 0;
+		maxArmor = 10;
 	}
 
 	private boolean recovering = false;
@@ -102,11 +105,6 @@ public class CrystalGuardian extends Mob{
 	public boolean surprisedBy(Char enemy, boolean attacking) {
 		if (recovering) return false;
 		else            return super.surprisedBy(enemy, attacking);
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	@Override

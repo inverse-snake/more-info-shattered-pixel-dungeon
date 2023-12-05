@@ -56,6 +56,8 @@ public class Thief extends Mob {
 		FLEEING = new Fleeing();
 
 		properties.add(Property.UNDEAD);
+		minArmor = 0;
+		maxArmor = 3;
 	}
 
 	private static final String ITEM = "item";
@@ -115,11 +117,6 @@ public class Thief extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 3);
 	}
 
 	@Override

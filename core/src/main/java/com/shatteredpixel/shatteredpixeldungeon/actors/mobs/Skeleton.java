@@ -51,6 +51,8 @@ public class Skeleton extends Mob {
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
+		minArmor = 0;
+		maxArmor = 5;
 	}
 	
 	@Override
@@ -105,11 +107,6 @@ public class Skeleton extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 
 }

@@ -60,6 +60,8 @@ public class Guard extends Mob {
 		properties.add(Property.UNDEAD);
 		
 		HUNTING = new Hunting();
+		minArmor = 0;
+		maxArmor = 7;
 	}
 
 	@Override
@@ -133,11 +135,6 @@ public class Guard extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 7);
 	}
 
 	@Override

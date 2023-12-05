@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sorrowmoss extends Plant {
@@ -52,6 +53,15 @@ public class Sorrowmoss extends Plant {
 		if (Dungeon.level.heroFOV[pos]) {
 			CellEmitter.center( pos ).burst( PoisonParticle.SPLASH, 3 );
 		}
+	}
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc", 5 + Math.round(2*Dungeon.scalingDepth() / 3f));
+		if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
+			desc += "\n\n" + Messages.get(this, "warden_desc");
+		}
+		return desc;
 	}
 	
 	public static class Seed extends Plant.Seed {

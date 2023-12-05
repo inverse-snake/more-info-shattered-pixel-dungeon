@@ -112,6 +112,7 @@ public enum Rankings {
 		rec.daily       = Dungeon.daily;
 
 		Badges.validateHighScore( rec.score );
+		Badges.validateGoldScore(Challenges.activeChallenges());
 		
 		INSTANCE.saveGameData(rec);
 

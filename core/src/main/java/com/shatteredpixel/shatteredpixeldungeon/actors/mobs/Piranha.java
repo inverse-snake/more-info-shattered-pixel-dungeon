@@ -82,10 +82,10 @@ public class Piranha extends Mob {
 	public int attackSkill( Char target ) {
 		return 20 + Dungeon.depth * 2;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, Dungeon.depth);
+	public int maxArmor() {
+		return Dungeon.depth;
 	}
 
 	@Override

@@ -36,9 +36,11 @@ import java.util.ArrayList;
 public class BadgesList extends ScrollPane {
 
 	private ArrayList<ListItem> items = new ArrayList<>();
+	private final boolean global;
 	
 	public BadgesList( boolean global ) {
 		super( new Component() );
+		this.global = global;
 		
 		for (Badges.Badge badge : Badges.filterReplacedBadges( global )) {
 			
@@ -91,7 +93,7 @@ public class BadgesList extends ScrollPane {
 			super();
 			
 			this.badge = badge;
-			icon.copy( BadgeBanner.image( badge.image ));
+			icon.copy( BadgeBanner.image( badge ));
 			label.text( badge.title() );
 		}
 		
@@ -120,7 +122,7 @@ public class BadgesList extends ScrollPane {
 		public boolean onClick( float x, float y ) {
 			if (inside( x, y )) {
 				Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
-				Game.scene().add( new WndBadge( badge, true ) );
+				Game.scene().add( new WndBadge( badge, true, global ) );
 				return true;
 			} else {
 				return false;

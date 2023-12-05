@@ -22,10 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.particles.Emitter;
 
 public class ImpSprite extends MobSprite {
 	
@@ -62,12 +65,31 @@ public class ImpSprite extends MobSprite {
 	@Override
 	public void onComplete( Animation anim ) {
 		if (anim == die) {
-			
+			clearAura();
 			emitter().burst( Speck.factory( Speck.WOOL ), 15 );
 			killAndErase();
 			
 		} else {
 			super.onComplete( anim );
 		}
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if (aura != null) {
+			aura.visible = !visible && haveSeenTheImp();
+		}
+	}
+
+	public void createHint() {
+		if (aura == null) {
+			aura(0xFF0000);
+			aura.visible = !visible && haveSeenTheImp();
+		}
+	}
+
+	boolean haveSeenTheImp() {
+		return this.ch != null && Dungeon.level != null && Dungeon.level.visited[this.ch.pos];
 	}
 }

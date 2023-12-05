@@ -65,6 +65,9 @@ public class Eye extends Mob {
 		lootChance = 1f;
 
 		properties.add(Property.DEMONIC);
+
+		minArmor = 0;
+		maxArmor = 10;
 	}
 
 	@Override
@@ -75,11 +78,6 @@ public class Eye extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 30;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 	
 	private Ballistica beam;

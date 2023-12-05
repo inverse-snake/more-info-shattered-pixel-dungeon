@@ -23,8 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -32,8 +34,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TormentedSpiritSprite;
@@ -91,9 +95,27 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		//changes = new ChangeInfo("", false, null);
-		//changes.hardlight(Window.TITLE_COLOR);
-		//changeInfos.add(changes);
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("More Info Mod v0.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+		changes.addButton(new ChangeButton(new Image(new RatSprite()), "Traits and armor",
+				"All mobs now display their traits (miniboss, undead, fiery) and most display their armor. Mobs whose armor value is supposed to be unknown (such as statues: you don't know their equipment level until you beat them) do not display it."));
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GLYPH_HOLDER), "More catalog tabs",
+				"Three new tabs have been added to catalogue: glyphs, enchantments and mobs, for a total of 12 tabs, up from Shattered's 7"));
+		changes.addButton(new ChangeButton(BadgeBanner.image(Badges.Badge.MI_RAT_ARMOR), "Badges",
+				"New badges have been added! These badges are intended for pro players, and can be accessed through the golden star icon on the badges page."));
+		changes.addButton(new ChangeButton(new Image(new ImpSprite()), "Minor improvements",
+				"-The imp's note in the journal now displays the quest\n" +
+				"-The imp will glow while outside the field of vision and the quest is completed, to make finding him again easier\n" +
+				"-Sheep sprite disappears instantly when they vanish, instead of slowly fading\n" +
+				"-Various textual improvements and fixes"));
+		changes.addButton(new ChangeButton(Icons.DISPLAY_LAND.get(), "Desktop release",
+				"The mod is now available on desktop.\n\n" +
+				"Actually, you could always compile the previous versions yourself and they would work on PC, I simply never bothered to do that"));
 
 		changes = new ChangeInfo("More Info Mod v0.1-0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);

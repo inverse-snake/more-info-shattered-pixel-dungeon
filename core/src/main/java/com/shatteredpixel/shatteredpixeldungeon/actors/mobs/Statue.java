@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
@@ -53,7 +54,8 @@ public class Statue extends Mob {
 	
 	public Statue() {
 		super();
-		
+		weapon = new Rapier();
+
 		HP = HT = 15 + Dungeon.depth * 5;
 		defenseSkill = 4 + Dungeon.depth;
 	}

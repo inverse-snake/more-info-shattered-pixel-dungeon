@@ -60,6 +60,8 @@ public class RipperDemon extends Mob {
 
 		properties.add(Property.DEMONIC);
 		properties.add(Property.UNDEAD);
+		minArmor = 0;
+		maxArmor = 4;
 	}
 
 	@Override
@@ -80,11 +82,6 @@ public class RipperDemon extends Mob {
 	@Override
 	public float attackDelay() {
 		return super.attackDelay()*0.5f;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 
 	private static final String LAST_ENEMY_POS = "last_enemy_pos";

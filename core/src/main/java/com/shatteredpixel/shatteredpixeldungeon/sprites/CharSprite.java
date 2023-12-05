@@ -130,6 +130,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		super();
 		listener = this;
 	}
+
+	public CharSprite forceIdling() {
+		play(idle);
+		return this;
+	}
 	
 	@Override
 	public void play(Animation anim) {

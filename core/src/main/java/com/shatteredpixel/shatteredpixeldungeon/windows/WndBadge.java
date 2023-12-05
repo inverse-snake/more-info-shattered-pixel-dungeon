@@ -33,11 +33,11 @@ public class WndBadge extends Window {
 	private static final int MAX_WIDTH = 125;
 	private static final int MARGIN = 4;
 	
-	public WndBadge( Badges.Badge badge, boolean unlocked ) {
+	public WndBadge( Badges.Badge badge, boolean unlocked, boolean showChals ) {
 		
 		super();
 		
-		Image icon = BadgeBanner.image( badge.image );
+		Image icon = BadgeBanner.image( badge );
 		icon.scale.set( 2 );
 		if (!unlocked) icon.brightness(0.4f);
 		add( icon );
@@ -49,7 +49,7 @@ public class WndBadge extends Window {
 		if (!unlocked) title.hardlight( 0x888822 );
 		add(title);
 
-		String desc = badge.desc();
+		String desc = showChals ? badge.descFull() : badge.desc();
 		String unlock = Badges.showCompletionProgress(badge);
 
 		if (unlock != null){

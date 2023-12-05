@@ -41,6 +41,9 @@ public class GnollGuard extends Mob {
 
 		loot = Spear.class;
 		lootChance = 0.1f;
+
+		minArmor = 0;
+		maxArmor = 6;
 	}
 
 	@Override
@@ -55,11 +58,6 @@ public class GnollGuard extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 20;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
 	@Override

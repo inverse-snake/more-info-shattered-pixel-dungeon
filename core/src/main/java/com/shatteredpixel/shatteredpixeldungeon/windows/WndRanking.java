@@ -55,7 +55,6 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.DeviceCompat;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -402,7 +401,7 @@ public class WndRanking extends WndTabbed {
 			if (Badges.filterReplacedBadges(false).size() <= 8){
 				badges = new BadgesList(false);
 			} else {
-				badges = new BadgesGrid(false);
+				badges = new BadgesGrid(false, BadgesGrid.BadgeType.ANY);
 			}
 			add(badges);
 			badges.setSize( WIDTH, HEIGHT );

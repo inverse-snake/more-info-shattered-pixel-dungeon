@@ -53,6 +53,8 @@ public class DM200 extends Mob {
 		properties.add(Property.LARGE);
 
 		HUNTING = new Hunting();
+		minArmor = 0;
+		maxArmor = 8;
 	}
 
 	@Override
@@ -63,11 +65,6 @@ public class DM200 extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 20;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 8);
 	}
 
 	@Override

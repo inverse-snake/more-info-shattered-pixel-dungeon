@@ -141,6 +141,7 @@ public class RatKing extends NPC {
 									crown.upgradeArmor(Dungeon.hero, Dungeon.hero.belongings.armor(), new Ratmogrify());
 									((RatKingSprite)sprite).resetAnims();
 									yell(Messages.get(RatKing.class, "crown_thankyou"));
+									Badges.validateRatmogrifyMod();
 								} else if (index == 1) {
 									GameScene.show(new WndInfoArmorAbility(Dungeon.hero.heroClass, new Ratmogrify()));
 								} else {

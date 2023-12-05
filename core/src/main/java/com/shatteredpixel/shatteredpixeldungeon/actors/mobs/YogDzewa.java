@@ -652,6 +652,9 @@ public class YogDzewa extends Mob {
 
 			properties.add(Property.DEMONIC);
 			properties.add(Property.BOSS_MINION);
+
+			minArmor = 0;
+			maxArmor = 4;
 		}
 
 		@Override
@@ -662,11 +665,6 @@ public class YogDzewa extends Mob {
 		@Override
 		public int damageRoll() {
 			return Random.NormalIntRange( 15, 25 );
-		}
-
-		@Override
-		public int drRoll() {
-			return super.drRoll() + Random.NormalIntRange(0, 4);
 		}
 
 	}

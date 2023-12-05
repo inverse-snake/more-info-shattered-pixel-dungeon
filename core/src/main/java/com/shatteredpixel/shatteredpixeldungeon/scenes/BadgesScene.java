@@ -28,12 +28,16 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
 
 public class BadgesScene extends PixelScene {
+	protected boolean modExclusive = false;
 
 	@Override
 	public void create() {
@@ -67,7 +71,9 @@ public class BadgesScene extends PixelScene {
 		add(title);
 
 		Badges.loadGlobal();
-		BadgesGrid grid = new BadgesGrid(true);
+		BadgesGrid grid = new BadgesGrid(true, modExclusive
+				? BadgesGrid.BadgeType.MOD_EXCLUSIVE
+				: BadgesGrid.BadgeType.BASEGAME);
 		grid.setRect(margin, top, w-(2*margin), h-top-margin);
 		add(grid);
 
@@ -75,7 +81,20 @@ public class BadgesScene extends PixelScene {
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
 		add( btnExit );
 
+		IconButton btnSwitch = new IconButton(btnSwitchIcon()) {
+			@Override
+			protected void onClick() {
+				ShatteredPixelDungeon.switchNoFade( modExclusive ? BadgesScene.class : ModBadgesScene.class );
+			}
+		};
+		btnSwitch.setRect(0, 0, 20, 20);
+		add(btnSwitch);
+
 		fadeIn();
+	}
+
+	private Image btnSwitchIcon() {
+		return modExclusive ? Icons.TALENT.get() : Icons.MI_SETTING.get();
 	}
 
 	@Override

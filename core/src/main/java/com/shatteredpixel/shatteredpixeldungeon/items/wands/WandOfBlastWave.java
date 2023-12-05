@@ -90,7 +90,7 @@ public class WandOfBlastWave extends DamageWand {
 
 				if (ch.pos == bolt.collisionPos + i) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-					int strength = 1 + Math.round(buffedLvl() / 2f);
+					int strength = adjacentStrength(buffedLvl());
 					throwChar(ch, trajectory, strength, false, true, this);
 				}
 
@@ -105,19 +105,29 @@ public class WandOfBlastWave extends DamageWand {
 
 			if (bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
-				int strength = buffedLvl() + 3;
+				int strength = targetStrength(buffedLvl());
 				throwChar(ch, trajectory, strength, false, true, this);
 			}
 		}
 		
 	}
 
+	private int targetStrength(int level) {
+		return level + 3;
+	}
+
+	private int adjacentStrength(int level) {
+		return 1 + Math.round(level / 2f);
+	}
+
 	@Override
 	public String statsDesc() {
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", min(), max(), buffedLvl() + 3, buffedLvl() / 2);
+			return Messages.get(this, "stats_desc", min(), max(),
+					targetStrength(buffedLvl()), adjacentStrength(buffedLvl()));
 		else
-			return Messages.get(this, "stats_desc", min(0), max(0), 0 + 3, 0 / 2);
+			return Messages.get(this, "stats_desc", min(0), max(0),
+					targetStrength(0), adjacentStrength(0));
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,

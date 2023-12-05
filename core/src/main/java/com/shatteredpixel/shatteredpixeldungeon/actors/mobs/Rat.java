@@ -37,6 +37,8 @@ public class Rat extends Mob {
 		defenseSkill = 2;
 		
 		maxLvl = 5;
+		minArmor = 0;
+		maxArmor = 1;
 	}
 
 	@Override
@@ -56,11 +58,6 @@ public class Rat extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 8;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 1);
 	}
 
 	private static final String RAT_ALLY = "rat_ally";

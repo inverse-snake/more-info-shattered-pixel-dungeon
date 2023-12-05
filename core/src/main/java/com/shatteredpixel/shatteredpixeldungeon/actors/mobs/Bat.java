@@ -45,6 +45,9 @@ public class Bat extends Mob {
 		
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see lootChance()
+
+		minArmor = 0;
+		maxArmor = 4;
 	}
 	
 	@Override
@@ -55,11 +58,6 @@ public class Bat extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 16;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 	
 	@Override

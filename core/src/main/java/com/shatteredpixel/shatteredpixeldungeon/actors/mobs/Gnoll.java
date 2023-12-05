@@ -39,6 +39,9 @@ public class Gnoll extends Mob {
 		
 		loot = Gold.class;
 		lootChance = 0.5f;
+
+		minArmor = 0;
+		maxArmor = 2;
 	}
 	
 	@Override
@@ -49,10 +52,5 @@ public class Gnoll extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 10;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 2);
 	}
 }

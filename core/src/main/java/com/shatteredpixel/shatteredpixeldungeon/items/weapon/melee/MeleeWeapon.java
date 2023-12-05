@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -703,6 +704,19 @@ public class MeleeWeapon extends Weapon {
 			ActionIndicator.setAction(this);
 			Item.updateQuickslot();
 			AttackIndicator.updateState();
+		}
+	}
+
+	public static class EnchantHolder extends MeleeWeapon {
+		{
+			image = ItemSpriteSheet.STONE_ENCHANT;
+		}
+		@Override
+		public String info() {
+			if (enchantment == null) {
+				return "";
+			}
+			return enchantment.desc();
 		}
 	}
 

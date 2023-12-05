@@ -52,6 +52,9 @@ public abstract class Shaman extends Mob {
 		
 		loot = Generator.Category.WAND;
 		lootChance = 0.03f; //initially, see lootChance()
+
+		minArmor = 0;
+		maxArmor = 6;
 	}
 	
 	@Override
@@ -62,11 +65,6 @@ public abstract class Shaman extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 18;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
 	@Override

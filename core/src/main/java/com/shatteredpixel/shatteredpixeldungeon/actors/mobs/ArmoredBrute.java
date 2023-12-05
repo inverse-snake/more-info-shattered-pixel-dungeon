@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShieldedSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 public class ArmoredBrute extends Brute {
@@ -41,15 +43,13 @@ public class ArmoredBrute extends Brute {
 		//see rollToDropLoot
 		loot = Generator.Category.ARMOR;
 		lootChance = 1f;
+
+		minArmor += 4;
+		maxArmor += 4;
 	}
 	
 	@Override
-	public int drRoll() {
-		return super.drRoll() + 4; //4-12 DR total
-	}
-	
-	@Override
-	protected void triggerEnrage () {
+	protected void triggerEnrage() {
 		Buff.affect(this, ArmoredRage.class).setShield(HT/2 + 1);
 		if (Dungeon.level.heroFOV[pos]) {
 			sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );

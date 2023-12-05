@@ -49,6 +49,8 @@ public class RotLasher extends Mob {
 
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
+		minArmor = 0;
+		maxArmor = 8;
 	}
 
 	@Override
@@ -99,11 +101,6 @@ public class RotLasher extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 25;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 8);
 	}
 	
 	{

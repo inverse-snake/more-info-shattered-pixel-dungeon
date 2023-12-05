@@ -49,6 +49,8 @@ public class Monk extends Mob {
 		lootChance = 0.083f;
 
 		properties.add(Property.UNDEAD);
+		minArmor = 0;
+		maxArmor = 2;
 	}
 	
 	@Override
@@ -64,11 +66,6 @@ public class Monk extends Mob {
 	@Override
 	public float attackDelay() {
 		return super.attackDelay()*0.5f;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 2);
 	}
 	
 	@Override

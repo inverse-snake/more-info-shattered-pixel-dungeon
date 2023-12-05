@@ -56,9 +56,9 @@ public class BadgeBanner extends Image {
 	
 	public static ArrayList<BadgeBanner> showing = new ArrayList<>();
 	
-	private BadgeBanner( int index ) {
+	private BadgeBanner( int index, boolean modExclusive ) {
 		
-		super( Assets.Interfaces.BADGES );
+		super( modExclusive ? Assets.Interfaces.MI_BADGES : Assets.Interfaces.BADGES );
 		
 		if (atlas == null) {
 			atlas = new TextureFilm( texture, SIZE, SIZE );
@@ -197,8 +197,8 @@ public class BadgeBanner extends Image {
 		image.parent.add( star );
 	}
 	
-	public static BadgeBanner show( int image ) {
-		BadgeBanner banner = new BadgeBanner(image);
+	public static BadgeBanner show(Badges.Badge badge) {
+		BadgeBanner banner = new BadgeBanner(badge.image, badge.modExclusive());
 		showing.add(banner);
 		return banner;
 	}
@@ -208,7 +208,13 @@ public class BadgeBanner extends Image {
 	}
 	
 	public static Image image( int index ) {
-		Image image = new Image( Assets.Interfaces.BADGES );
+		return image(index, false);
+	}
+	public static Image image(Badges.Badge badge) {
+		return image(badge.image, badge.modExclusive());
+	}
+	private static Image image(int index, boolean modExclusive) {
+		Image image = new Image( modExclusive ? Assets.Interfaces.MI_BADGES : Assets.Interfaces.BADGES );
 		if (atlas == null) {
 			atlas = new TextureFilm( image.texture, 16, 16 );
 		}

@@ -36,10 +36,15 @@ import java.util.ArrayList;
 
 public class BadgesGrid extends Component {
 
+	private final boolean global;
 	ArrayList<BadgeButton> badgeButtons;
+	public enum BadgeType {
+		ANY, BASEGAME, MOD_EXCLUSIVE
+	}
 
-	public BadgesGrid( boolean global ){
+	public BadgesGrid( boolean global, BadgeType badgesType ){
 		super();
+		this.global = global;
 		badgeButtons = new ArrayList<>();
 
 		for (Badges.Badge badge : Badges.filterReplacedBadges( global )) {
@@ -47,8 +52,14 @@ public class BadgesGrid extends Component {
 			if (badge.image == -1) {
 				continue;
 			}
+			if (badgesType == BadgeType.MOD_EXCLUSIVE && !badge.modExclusive()) {
+				continue;
+			}
+			if (badgesType == BadgeType.BASEGAME && badge.modExclusive()) {
+				continue;
+			}
 
-			BadgeButton button = new BadgeButton( badge, true );
+			BadgeButton button = new BadgeButton( badge, true, global );
 			add( button );
 			badgeButtons.add(button);
 		}
@@ -57,6 +68,12 @@ public class BadgesGrid extends Component {
 
 			ArrayList<Badges.Badge> lockedBadges = new ArrayList<>();
 			for (Badges.Badge badge : Badges.Badge.values()) {
+				if (badgesType == BadgeType.MOD_EXCLUSIVE && !badge.modExclusive()) {
+					continue;
+				}
+				if (badgesType == BadgeType.BASEGAME && badge.modExclusive()) {
+					continue;
+				}
 				if (badge.image != -1 && !Badges.isUnlocked(badge)) {
 					lockedBadges.add(badge);
 				}
@@ -64,7 +81,7 @@ public class BadgesGrid extends Component {
 			Badges.filterBadgesWithoutPrerequisites(lockedBadges);
 
 			for (Badges.Badge badge : lockedBadges) {
-				BadgeButton button = new BadgeButton( badge, false );
+				BadgeButton button = new BadgeButton( badge, false, global );
 				add(button);
 				badgeButtons.add(button);
 			}
@@ -113,14 +130,16 @@ public class BadgesGrid extends Component {
 		private boolean unlocked;
 
 		private Image icon;
+		private final boolean global;
 
-		public BadgeButton( Badges.Badge badge, boolean unlocked ) {
+		public BadgeButton( Badges.Badge badge, boolean unlocked, boolean global ) {
 			super();
+			this.global = global;
 
 			this.badge = badge;
 			this.unlocked = unlocked;
 
-			icon = BadgeBanner.image(badge.image);
+			icon = BadgeBanner.image(badge);
 			if (!unlocked) {
 				icon.brightness(0.4f);
 			}
@@ -149,7 +168,7 @@ public class BadgesGrid extends Component {
 		@Override
 		protected void onClick() {
 			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
-			Game.scene().add( new WndBadge( badge, unlocked ) );
+			Game.scene().add( new WndBadge( badge, unlocked, global ) );
 		}
 
 		@Override

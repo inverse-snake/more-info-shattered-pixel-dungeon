@@ -48,6 +48,8 @@ public class CrystalWisp extends Mob{
 		flying = true;
 
 		properties.add(Property.INORGANIC);
+		minArmor = 0;
+		maxArmor = 5;
 	}
 
 	public CrystalWisp(){
@@ -81,11 +83,6 @@ public class CrystalWisp extends Mob{
 	@Override
 	public int attackSkill( Char target ) {
 		return 18;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 
 	@Override

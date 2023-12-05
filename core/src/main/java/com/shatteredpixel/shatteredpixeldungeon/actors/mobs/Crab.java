@@ -40,6 +40,9 @@ public class Crab extends Mob {
 		
 		loot = new MysteryMeat();
 		lootChance = 0.167f;
+
+		minArmor = 0;
+		maxArmor = 4;
 	}
 	
 	@Override
@@ -50,10 +53,5 @@ public class Crab extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 }

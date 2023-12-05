@@ -62,6 +62,9 @@ public class Necromancer extends Mob {
 		properties.add(Property.UNDEAD);
 		
 		HUNTING = new Hunting();
+
+		minArmor = 0;
+		maxArmor = 5;
 	}
 	
 	public boolean summoning = false;
@@ -79,11 +82,6 @@ public class Necromancer extends Mob {
 			if (sprite instanceof NecromancerSprite) ((NecromancerSprite) sprite).cancelSummoning();
 		}
 		return super.act();
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 	
 	@Override

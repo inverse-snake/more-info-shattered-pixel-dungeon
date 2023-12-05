@@ -56,6 +56,9 @@ public class Golem extends Mob {
 
 		WANDERING = new Wandering();
 		HUNTING = new Hunting();
+
+		minArmor = 0;
+		maxArmor = 12;
 	}
 
 	@Override
@@ -66,11 +69,6 @@ public class Golem extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 28;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 12);
 	}
 
 	@Override

@@ -61,6 +61,9 @@ public class Imp extends NPC {
 			die(null);
 			return true;
 		}
+		if (canComplete()) {
+			((ImpSprite)sprite).createHint();
+		}
 		if (!Quest.given && Dungeon.level.visited[pos]) {
 			Notes.add( Notes.Landmark.IMP );
 			if (!seenBefore && Dungeon.level.heroFOV[pos]) {
@@ -93,7 +96,15 @@ public class Imp extends NPC {
 	public boolean reset() {
 		return true;
 	}
-	
+
+	private boolean canComplete() {
+		if (Quest.completed || !Quest.given || Dungeon.hero == null) {
+			return false;
+		}
+		DwarfToken tokens = Dungeon.hero.belongings.getItem( DwarfToken.class );
+		return tokens != null && (tokens.quantity() >= 5 || (!Quest.alternative && tokens.quantity() >= 4));
+	}
+
 	@Override
 	public boolean interact(Char c) {
 		
@@ -123,7 +134,8 @@ public class Imp extends NPC {
 			tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
 			Quest.given = true;
 			Quest.completed = false;
-			Notes.add( Notes.Landmark.IMP );
+			Notes.remove(Notes.Landmark.IMP);
+			Notes.add(Quest.alternative ? Notes.Landmark.IMP_MONKS : Notes.Landmark.IMP_GOLEMS);
 		}
 
 		return true;
@@ -259,6 +271,8 @@ public class Imp extends NPC {
 
 			Statistics.questScores[3] = 4000;
 			Notes.remove( Notes.Landmark.IMP );
+			Notes.remove( Notes.Landmark.IMP_MONKS );
+			Notes.remove( Notes.Landmark.IMP_GOLEMS );
 		}
 		
 		public static boolean isCompleted() {

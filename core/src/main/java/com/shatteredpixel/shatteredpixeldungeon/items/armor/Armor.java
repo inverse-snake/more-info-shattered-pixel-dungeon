@@ -684,7 +684,7 @@ public class Armor extends EquipableItem {
 				10  //3.33% each
 		};
 
-		private static final Class<?>[] curses = new Class<?>[]{
+		public static final Class<?>[] curses = new Class<?>[]{
 				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class
 		};
@@ -788,5 +788,23 @@ public class Armor extends EquipableItem {
 			}
 		}
 		
+	}
+
+	public static class GlyphHolder extends Armor {
+		{
+			image = ItemSpriteSheet.STYLUS;
+		}
+
+		public GlyphHolder() {
+			super(1);
+		}
+
+		@Override
+		public String info() {
+			if (glyph == null) {
+				return "";
+			}
+			return glyph.desc();
+		}
 	}
 }

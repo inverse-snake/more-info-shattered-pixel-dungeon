@@ -26,10 +26,17 @@ import com.watabou.noosa.TextureFilm;
 
 public class ItemSpriteSheet {
 
-	private static final int WIDTH = 16;
+	private static final int WIDTH = 19;
+	private static final int SHPD_WIDTH = 16;
 	public static final int SIZE = 16;
 
 	public static TextureFilm film = new TextureFilm( Assets.Sprites.ITEMS, SIZE, SIZE );
+
+	public static int shpdIconToMyIcon(int pos) {
+		int row = pos / SHPD_WIDTH;
+		int col = pos % SHPD_WIDTH;
+		return row * WIDTH + col;
+	}
 
 	private static int xy(int x, int y){
 		x -= 1; y -= 1;
@@ -60,6 +67,9 @@ public class ItemSpriteSheet {
 	public static final int CATA_HOLDER     = PLACEHOLDERS+13;
 	public static final int ELIXIR_HOLDER   = PLACEHOLDERS+14;
 	public static final int SPELL_HOLDER    = PLACEHOLDERS+15;
+	public static final int GLYPH_HOLDER    = PLACEHOLDERS+16;
+	public static final int ENCHANT_HOLDER  = PLACEHOLDERS+17;
+	public static final int MOB_HOLDER      = PLACEHOLDERS+18;
 	static{
 		assignItemRect(SOMETHING,       8,  13);
 		assignItemRect(WEAPON_HOLDER,   14, 14);
@@ -77,6 +87,9 @@ public class ItemSpriteSheet {
 		assignItemRect(CATA_HOLDER,     6,  15);
 		assignItemRect(ELIXIR_HOLDER,   12, 14);
 		assignItemRect(SPELL_HOLDER,    8,  16);
+		assignItemRect(GLYPH_HOLDER,    12,  13);
+		assignItemRect(ENCHANT_HOLDER,  14,  14);
+		assignItemRect(MOB_HOLDER,  13,  12);
 	}
 
 	private static final int UNCOLLECTIBLE  =                               xy(1, 2);   //16 slots

@@ -54,6 +54,8 @@ public class Spinner extends Mob {
 
 		HUNTING = new Hunting();
 		FLEEING = new Fleeing();
+		minArmor = 0;
+		maxArmor = 6;
 	}
 
 	@Override
@@ -64,11 +66,6 @@ public class Spinner extends Mob {
 	@Override
 	public int attackSkill(Char target) {
 		return 22;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
 	private int webCoolDown = 0;

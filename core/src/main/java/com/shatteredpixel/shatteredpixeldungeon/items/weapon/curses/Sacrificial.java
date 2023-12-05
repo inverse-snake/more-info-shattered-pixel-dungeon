@@ -60,7 +60,7 @@ public class Sacrificial extends Weapon.Enchantment {
 	}
 
 	@Override
-	public String desc() {
+	public String desc(int lvl) {
 		Char attacker = Dungeon.hero;
 		float missingPercent = attacker.HP/(float)attacker.HT;
 		float bleedAmt = (float)(Math.pow(missingPercent, 2) * attacker.HT)/8f;

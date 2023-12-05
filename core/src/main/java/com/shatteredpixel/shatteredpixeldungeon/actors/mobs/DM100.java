@@ -55,6 +55,8 @@ public class DM100 extends Mob implements Callback {
 		
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.INORGANIC);
+		minArmor = 0;
+		maxArmor = 4;
 	}
 	
 	@Override
@@ -65,11 +67,6 @@ public class DM100 extends Mob implements Callback {
 	@Override
 	public int attackSkill( Char target ) {
 		return 11;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 
 	@Override

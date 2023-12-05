@@ -58,6 +58,8 @@ public class Warlock extends Mob implements Callback {
 		lootChance = 0.5f;
 
 		properties.add(Property.UNDEAD);
+		minArmor = 0;
+		maxArmor = 8;
 	}
 	
 	@Override
@@ -68,11 +70,6 @@ public class Warlock extends Mob implements Callback {
 	@Override
 	public int attackSkill( Char target ) {
 		return 25;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 8);
 	}
 	
 	@Override

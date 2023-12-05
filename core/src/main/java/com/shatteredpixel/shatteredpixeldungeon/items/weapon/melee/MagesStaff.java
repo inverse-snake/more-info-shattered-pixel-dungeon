@@ -355,12 +355,12 @@ public class MagesStaff extends MeleeWeapon {
 		String info = super.info();
 
 		if (wand != null){
-			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name"));
+			info += "\n" + Messages.get(this, "has_wand", Messages.get(wand, "name"));
 			if ((!cursed && !hasCurseEnchant()) || !cursedKnown)    info += " " + wand.statsDesc();
 			else                                                    info += " " + Messages.get(this, "cursed_wand");
 
 			if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
-				info += "\n\n" + Messages.get(wand, "bmage_desc");
+				info += "\n" + Messages.get(wand, "bmage_desc");
 			}
 		}
 

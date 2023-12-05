@@ -49,6 +49,9 @@ public class Brute extends Mob {
 		
 		loot = Gold.class;
 		lootChance = 0.5f;
+
+		minArmor = 0;
+		maxArmor = 8;
 	}
 	
 	protected boolean hasRaged = false;
@@ -63,11 +66,6 @@ public class Brute extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 20;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 8);
 	}
 
 	@Override

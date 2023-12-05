@@ -391,7 +391,7 @@ abstract public class Weapon extends KindOfWeapon {
 				10  //3.33% each
 		};
 		
-		private static final Class<?>[] curses = new Class<?>[]{
+		public static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Dazzling.class, Explosive.class,
 				Sacrificial.class, Wayward.class, Polarized.class, Friendly.class
 		};

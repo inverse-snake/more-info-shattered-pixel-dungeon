@@ -59,6 +59,8 @@ public class Goo extends Mob {
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
 		properties.add(Property.ACIDIC);
+		minArmor = 0;
+		maxArmor = 2;
 	}
 
 	private int pumpedUp = 0;
@@ -91,11 +93,6 @@ public class Goo extends Mob {
 	@Override
 	public int defenseSkill(Char enemy) {
 		return (int)(super.defenseSkill(enemy) * ((HP*2 <= HT)? 1.5 : 1));
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 2);
 	}
 
 	@Override

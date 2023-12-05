@@ -117,7 +117,7 @@ public class TalismanOfForesight extends Artifact {
 		if ( isEquipped( Dungeon.hero ) ){
 			if (!cursed) {
 				desc += "\n\n" + Messages.get(this, "desc_worn",
-						Messages.decimalFormat("#.##", 100f * (0.05f+(level()*0.005f))),
+						Messages.decimalFormat("#.###", 0.05f+(level()*0.005f)),
 						5 + 2*level());
 				if (level() < levelCap) {
 					desc += "\n" + Messages.get(this, "desc_upgrade", 100 + 50*level() - exp);

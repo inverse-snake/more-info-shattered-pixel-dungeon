@@ -379,7 +379,7 @@ public enum Icons {
 				icon.scale.set(PixelScene.align(0.49f));
 				break;
 			case MI_SETTING:
-				icon.frame(icon.texture.uvRectBySize(247, 115, 9,  13));
+				icon.frame(icon.texture.uvRectBySize(243, 115, 13,  13));
 				break;
 		}
 		return icon;

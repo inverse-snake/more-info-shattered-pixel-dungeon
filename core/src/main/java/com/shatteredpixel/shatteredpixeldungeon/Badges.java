@@ -29,16 +29,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,6 +50,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Badges {
 	
@@ -179,11 +184,24 @@ public class Badges {
 		GAMES_PLAYED_5              ( 121, true ),
 		HIGH_SCORE_5                ( 122 ),
 		CHAMPION_2                  ( 123 ),
-		CHAMPION_3                  ( 124 );
+		CHAMPION_3                  ( 124 ),
+		//mod-specific
+		MI_RAT_ARMOR(5),
+		MI_9CHAL(2),
+		MI_21UPGRADES(0),
+		MI_GOLDSCORE(3),
+		MI_NOPROGRESSION(7),
+		MI_GAMES_PLAYED(1, true),//A joke badge. But I know someone will be insane enough to actually unlock this
+		MI_WARRIOR_CHALS,
+		MI_MAGE_CHALS,
+		MI_ROGUE_CHALS,
+		MI_HUNTRESS_CHALS,
+		MI_DUELIST_CHALS,
+		MI_ALL_9_CHALS(4, true);
 
-		public boolean meta;
+		public final boolean meta;
 
-		public int image;
+		public final int image;
 		
 		Badge( int image ) {
 			this( image, false );
@@ -195,11 +213,29 @@ public class Badges {
 		}
 
 		public String title(){
+			if (this == MI_GAMES_PLAYED && global != null && global.contains(this)) {
+				return Messages.get(this, name()+".title2");
+			}
 			return Messages.get(this, name()+".title");
 		}
 
 		public String desc(){
+			if (this == MI_GAMES_PLAYED && global != null && global.contains(this)) {
+				return Messages.get(this, name()+".desc2");
+			}
 			return Messages.get(this, name()+".desc");
+		}
+
+		public String descFull(){
+			String desc = desc();
+			if (globalChallenges != null && globalChallenges.containsKey(this)) {
+				desc += "\n\n" + Messages.get(this, "max_challenges", globalChallenges.get(this));
+			}
+			return desc;
+		}
+
+		public boolean modExclusive() {
+			return name().startsWith("MI_");
 		}
 		
 		Badge() {
@@ -208,6 +244,7 @@ public class Badges {
 	}
 	
 	private static HashSet<Badge> global;
+	private static HashMap<Badge, Integer> globalChallenges;
 	private static HashSet<Badge> local = new HashSet<>();
 	
 	private static boolean saveNeeded = false;
@@ -230,6 +267,14 @@ public class Badges {
 	private static final HashMap<String, String> renamedBadges = new HashMap<>();
 	static{
 		//no renamed badges currently
+	}
+
+	private static void updateChallenges(Badge badge, int chals) {
+		int curChals = globalChallenges.containsKey(badge) ? globalChallenges.get(badge) : 0;
+		if (badge != null && Dungeon.customSeedText.isEmpty() && chals > curChals) {
+			globalChallenges.put(badge, chals);
+			saveNeeded = true;
+		}
 	}
 
 	public static HashSet<Badge> restore( Bundle bundle ) {
@@ -268,7 +313,48 @@ public class Badges {
 		}
 		bundle.put( BADGES, names );
 	}
-	
+
+	private static final String MI_BADGES_KEY = "mi_badges_key";
+	private static final String MI_BADGES_VALUE = "mi_badges_value";
+	public static HashMap<Badge, Integer> restoreChals(Bundle bundle) {
+		HashMap<Badge, Integer> badgeChals = new HashMap<>();
+		if (bundle == null) return badgeChals;
+
+		String[] names = bundle.getStringArray( MI_BADGES_KEY );
+		if (names == null) return badgeChals;
+
+		int[] chals = bundle.getIntArray( MI_BADGES_VALUE );
+		if (chals == null) return badgeChals;
+
+		for (int i=0; i < names.length; i++) {
+			try {
+				if (renamedBadges.containsKey(names[i])){
+					names[i] = renamedBadges.get(names[i]);
+				}
+				if (!removedBadges.contains(names[i])){
+					badgeChals.put(Badge.valueOf( names[i] ), chals[i]);
+				}
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
+		}
+
+		return badgeChals;
+	}
+	public static void storeChals(Bundle bundle, HashMap<Badge, Integer> badgeChals) {
+		int count = 0;
+		String names[] = new String[badgeChals.size()];
+		int chals[] = new int[badgeChals.size()];
+
+		for (Map.Entry<Badge, Integer> entry : badgeChals.entrySet()) {
+			names[count] = entry.getKey().name();
+			chals[count] = entry.getValue();
+			++count;
+		}
+		bundle.put( MI_BADGES_KEY, names );
+		bundle.put( MI_BADGES_VALUE, chals );
+	}
+
 	public static void loadLocal( Bundle bundle ) {
 		local = restore( bundle );
 	}
@@ -282,9 +368,10 @@ public class Badges {
 			try {
 				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
-
+				globalChallenges = restoreChals(bundle);
 			} catch (IOException e) {
 				global = new HashSet<>();
+				globalChallenges = new HashMap<>();
 			}
 		}
 	}
@@ -298,7 +385,7 @@ public class Badges {
 			
 			Bundle bundle = new Bundle();
 			store( bundle, global );
-			
+			storeChals(bundle, globalChallenges);
 			try {
 				FileUtils.bundleToFile(BADGES_FILE, bundle);
 				saveNeeded = false;
@@ -552,6 +639,11 @@ public class Badges {
 			badge = Badge.ITEM_LEVEL_5;
 			local.add( badge );
 		}
+		if (!local.contains( Badge.MI_21UPGRADES ) && item.level() >= 21) {
+			if (badge != null) unlock(badge);
+			badge = Badge.MI_21UPGRADES;
+			local.add( badge );
+		}
 		
 		displayBadge( badge );
 	}
@@ -591,8 +683,8 @@ public class Badges {
 		for (Catalog cat : Catalog.values()){
 			if (cat.allSeen()){
 				Badge b = Catalog.catalogBadges.get(cat);
-				if (!isUnlocked(b)){
-					displayBadge(b);
+				if (b != null && !isUnlocked(b)){
+					unlock(b);
 				}
 			}
 		}
@@ -607,7 +699,7 @@ public class Badges {
 
 			Badge badge = Badge.ALL_ITEMS_IDENTIFIED;
 			if (!isUnlocked( badge )) {
-				displayBadge( badge );
+				unlock( badge );
 			}
 		}
 	}
@@ -852,6 +944,10 @@ public class Badges {
 	public static void validateRatmogrify(){
 		unlock(Badge.FOUND_RATMOGRIFY);
 	}
+
+	public static void validateRatmogrifyMod() {
+		displayBadge(Badge.MI_RAT_ARMOR);
+	}
 	
 	public static void validateMageUnlock(){
 		if (Statistics.upgradesUsed >= 1 && !isUnlocked(Badge.UNLOCK_MAGE)){
@@ -957,6 +1053,10 @@ public class Badges {
 			unlock(badge);
 			badge = Badge.GAMES_PLAYED_5;
 		}
+		if (Rankings.INSTANCE.totalNumber >= 100_000 || Rankings.INSTANCE.wonNumber >= 2500) {
+			unlock(badge);
+			badge = Badge.MI_GAMES_PLAYED;
+		}
 		
 		displayBadge( badge );
 	}
@@ -990,16 +1090,87 @@ public class Badges {
 
 		displayBadge( badge );
 	}
+
+	public static void validateGoldScore(int challenges) {
+		if (Statistics.progressScore >= 50_000 &&
+				Statistics.treasureScore >= 20_000 &&
+				Statistics.exploreScore >= 20_000 &&
+				Statistics.totalBossScore >= 15_000 &&
+				Statistics.totalQuestScore >= 10_000 &&
+				Statistics.ascended
+		) {
+			local.add(Badge.MI_GOLDSCORE);
+			displayBadge(Badge.MI_GOLDSCORE);
+			updateChallenges(Badge.MI_GOLDSCORE, challenges);
+		}
+	}
 	
 	//necessary in order to display the happy end badge in the surface scene
-	public static void silentValidateHappyEnd() {
+	public static void silentValidateHappyEnd(int challenges) {
 		if (!local.contains( Badge.HAPPY_END )){
 			local.add( Badge.HAPPY_END );
+		}
+		switch (Dungeon.hero.heroClass) {
+			case MAGE:
+				unlock(Badge.MI_MAGE_CHALS);
+				updateChallenges(Badge.MI_MAGE_CHALS, challenges);
+				break;
+			case WARRIOR:
+				unlock(Badge.MI_WARRIOR_CHALS);
+				updateChallenges(Badge.MI_WARRIOR_CHALS, challenges);
+				break;
+			case ROGUE:
+				unlock(Badge.MI_ROGUE_CHALS);
+				updateChallenges(Badge.MI_ROGUE_CHALS, challenges);
+				break;
+			case HUNTRESS:
+				unlock(Badge.MI_HUNTRESS_CHALS);
+				updateChallenges(Badge.MI_HUNTRESS_CHALS, challenges);
+				break;
+			case DUELIST:
+				unlock(Badge.MI_DUELIST_CHALS);
+				updateChallenges(Badge.MI_DUELIST_CHALS, challenges);
+				break;
 		}
 	}
 	
 	public static void validateHappyEnd() {
 		displayBadge( Badge.HAPPY_END );
+		if (globalChallenges.containsKey(Badge.MI_WARRIOR_CHALS) &&
+				globalChallenges.containsKey(Badge.MI_MAGE_CHALS) &&
+				globalChallenges.containsKey(Badge.MI_ROGUE_CHALS) &&
+				globalChallenges.containsKey(Badge.MI_HUNTRESS_CHALS) &&
+				globalChallenges.containsKey(Badge.MI_DUELIST_CHALS)) {
+			if (globalChallenges.get(Badge.MI_WARRIOR_CHALS) == 9 &&
+					globalChallenges.get(Badge.MI_MAGE_CHALS) == 9 &&
+					globalChallenges.get(Badge.MI_ROGUE_CHALS) == 9 &&
+					globalChallenges.get(Badge.MI_HUNTRESS_CHALS) == 9 &&
+					globalChallenges.get(Badge.MI_DUELIST_CHALS) == 9) {
+				displayBadge(Badge.MI_ALL_9_CHALS);
+			}
+		}
+	}
+
+	public static void validateModAmuletBadges(int challenges) {
+		if (challenges == 9) {
+			local.add(Badge.MI_9CHAL);
+			displayBadge(Badge.MI_9CHAL);
+		}
+		ArrayList<PotionOfStrength> pos = Dungeon.hero.belongings.getAllItems(PotionOfStrength.class);
+		ArrayList<ScrollOfUpgrade> sou = Dungeon.hero.belongings.getAllItems(ScrollOfUpgrade.class);
+		int posCnt = 0;
+		int souCnt = 0;
+		for (PotionOfStrength p : pos) {
+			posCnt += p.quantity();
+		}
+		for (ScrollOfUpgrade s : sou) {
+			souCnt += s.quantity();
+		}
+		if (posCnt == 10 && souCnt == 15 && new ScrollOfUpgrade().isKnown() && new PotionOfStrength().isKnown()) {
+			local.add(Badge.MI_NOPROGRESSION);
+			displayBadge(Badge.MI_NOPROGRESSION);
+			updateChallenges(Badge.MI_NOPROGRESSION, challenges);
+		}
 	}
 
 	public static void validateChampion( int challenges ) {
@@ -1236,6 +1407,16 @@ public class Badges {
 				else                                                result += Messages.titleCase(cls.title()) ;
 			}
 
+			return result;
+		} else if (badge == Badge.MI_ALL_9_CHALS) {
+			for (HeroClass cls : HeroClass.values()) {
+				Badge curBadge = Badge.valueOf("MI_" + Messages.upperCase(cls.name()) + "_CHALS");
+				int chals = 0;
+				if (globalChallenges.containsKey(curBadge)) {
+					chals = globalChallenges.get(curBadge);
+				}
+				result += "\n" + Messages.get(Badge.class, "max_challenges", chals) + " (" + cls.title() + ")";
+			}
 			return result;
 		}
 

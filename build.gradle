@@ -16,7 +16,7 @@ allprojects {
         appPackageName = 'com.inversesnake.moreinfoshatteredpixeldungeon'
 
         appVersionCode = 754
-        appVersionName = '2.2.1-mi0.2a'
+        appVersionName = '2.2.1-mi0.3'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

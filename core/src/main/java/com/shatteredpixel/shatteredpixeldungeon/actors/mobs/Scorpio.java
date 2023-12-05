@@ -52,6 +52,8 @@ public class Scorpio extends Mob {
 		lootChance = 0.5f;
 
 		properties.add(Property.DEMONIC);
+		minArmor = 0;
+		maxArmor = 16;
 	}
 	
 	@Override
@@ -62,11 +64,6 @@ public class Scorpio extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 36;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 16);
 	}
 	
 	@Override

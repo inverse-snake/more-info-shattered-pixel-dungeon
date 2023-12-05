@@ -91,6 +91,8 @@ public class DM300 extends Mob {
 		properties.add(Property.BOSS);
 		properties.add(Property.INORGANIC);
 		properties.add(Property.LARGE);
+		minArmor = 0;
+		maxArmor = 10;
 	}
 
 	@Override
@@ -101,11 +103,6 @@ public class DM300 extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 20;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	public int pylonsActivated = 0;

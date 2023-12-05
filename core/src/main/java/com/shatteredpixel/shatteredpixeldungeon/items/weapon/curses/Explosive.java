@@ -102,8 +102,8 @@ public class Explosive extends Weapon.Enchantment {
 	}
 
 	@Override
-	public String desc() {
-		String desc = super.desc();
+	public String desc(int level) {
+		String desc = super.desc(level);
 		if (durability > 50){
 			desc += " " + Messages.get(this, "desc_cool");
 		} else if (durability > 10){

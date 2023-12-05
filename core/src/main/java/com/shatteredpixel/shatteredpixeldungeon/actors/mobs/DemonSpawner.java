@@ -63,11 +63,8 @@ public class DemonSpawner extends Mob {
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 12);
+		minArmor = 0;
+		maxArmor = 12;
 	}
 
 	@Override

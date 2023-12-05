@@ -77,6 +77,9 @@ public abstract class YogFist extends Mob {
 
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
+
+		minArmor = 0;
+		maxArmor = 15;
 	}
 
 	private float rangedCooldown;
@@ -172,11 +175,6 @@ public abstract class YogFist extends Mob {
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 18, 36 );
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 15);
 	}
 
 	{

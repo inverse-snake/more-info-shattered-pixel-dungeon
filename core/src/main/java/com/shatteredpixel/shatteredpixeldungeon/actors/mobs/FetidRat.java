@@ -48,16 +48,14 @@ public class FetidRat extends Rat {
 
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
+
+		minArmor = 0;
+		maxArmor = 2;
 	}
 
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 2);
 	}
 
 	@Override

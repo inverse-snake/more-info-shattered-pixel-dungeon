@@ -23,19 +23,41 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredStatue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Pylon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickRecipe;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -48,6 +70,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -441,7 +464,7 @@ public class WndJournal extends WndTabbed {
 	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 9;
+		private static final int NUM_BUTTONS = 12;
 		
 		private static int currentItemIdx   = 0;
 		
@@ -455,8 +478,11 @@ public class WndJournal extends WndTabbed {
 		private static final int SCROLL_IDX = 6;
 		private static final int SEED_IDX = 7;
 		private static final int DART_IDX = 8;
+		private static final int ENCH_IDX = 9;
+		private static final int GLYPH_IDX = 10;
+		private static final int MOB_IDX = 11;
 		
-		private static final int spriteIndexes[] = {1, 2, 4, 5, 6, 9, 11, 10, 3};
+		private static final int spriteIndexes[] = {1, 2, 4, 5, 6, 9, 11, 10, 3, 17, 16, 18};
 
 		private ScrollingListPane list;
 
@@ -485,6 +511,14 @@ public class WndJournal extends WndTabbed {
 			super.layout();
 			
 			int perRow = NUM_BUTTONS;
+			for (int rows = 1; ; ++rows) {
+				int perRowTemp = (NUM_BUTTONS + rows - 1) / rows;
+				float btnWidthTemp = width() / perRowTemp;
+				if (btnWidthTemp >= ITEM_HEIGHT * 0.67) {
+					perRow = perRowTemp;
+					break;
+				}
+			}
 			float buttonWidth = width()/perRow;
 			
 			for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -511,58 +545,106 @@ public class WndJournal extends WndTabbed {
 			
 			list.scrollTo( 0, 0 );
 			
-			ArrayList<Class<? extends Item>> itemClasses;
+			ArrayList<Class<?/* extends Item*/>> itemClasses;
 			final HashMap<Class<?  extends Item>, Boolean> known = new HashMap<>();
 			if (currentItemIdx == WEAPON_IDX) {
 				itemClasses = new ArrayList<>(Catalog.WEAPONS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+				for (Class<? extends Item> cls : Catalog.WEAPONS.items()) known.put(cls, true);
 			} else if (currentItemIdx == ARMOR_IDX){
 				itemClasses = new ArrayList<>(Catalog.ARMOR.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+				for (Class<? extends Item> cls : Catalog.ARMOR.items()) known.put(cls, true);
 			} else if (currentItemIdx == WAND_IDX){
 				itemClasses = new ArrayList<>(Catalog.WANDS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+				for (Class<? extends Item> cls : Catalog.WANDS.items()) known.put(cls, true);
 			} else if (currentItemIdx == RING_IDX){
 				itemClasses = new ArrayList<>(Catalog.RINGS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
+				for (Class<? extends Item> cls : Catalog.RINGS.items()) known.put(cls, Ring.getKnown().contains(cls));
 			} else if (currentItemIdx == ARTIF_IDX){
 				itemClasses = new ArrayList<>(Catalog.ARTIFACTS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+				for (Class<? extends Item> cls : Catalog.ARTIFACTS.items()) known.put(cls, true);
 			} else if (currentItemIdx == POTION_IDX){
 				itemClasses = new ArrayList<>(Catalog.POTIONS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
+				for (Class<? extends Item> cls : Catalog.POTIONS.items()) known.put(cls, Potion.getKnown().contains(cls));
 			} else if (currentItemIdx == SCROLL_IDX) {
 				itemClasses = new ArrayList<>(Catalog.SCROLLS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
+				for (Class<? extends Item> cls : Catalog.SCROLLS.items()) known.put(cls, Scroll.getKnown().contains(cls));
 			} else if (currentItemIdx == SEED_IDX) {
 				itemClasses = new ArrayList<>(Catalog.SEEDS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+				for (Class<? extends Item> cls : Catalog.SEEDS.items()) known.put(cls, true);
 			} else if (currentItemIdx == DART_IDX) {
 				itemClasses = new ArrayList<>(Catalog.DARTS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+				for (Class<? extends Item> cls : Catalog.DARTS.items()) known.put(cls, true);
+			} else if (currentItemIdx == GLYPH_IDX) {
+				itemClasses = new ArrayList<>(Arrays.asList(Armor.Glyph.common));
+				itemClasses.addAll(Arrays.asList(Armor.Glyph.uncommon));
+				itemClasses.addAll(Arrays.asList(Armor.Glyph.rare));
+				itemClasses.addAll(Arrays.asList(Armor.Glyph.curses));
+			} else if (currentItemIdx == ENCH_IDX) {
+				itemClasses = new ArrayList<>(Arrays.asList(Weapon.Enchantment.common));
+				itemClasses.addAll(Arrays.asList(Weapon.Enchantment.uncommon));
+				itemClasses.addAll(Arrays.asList(Weapon.Enchantment.rare));
+				itemClasses.addAll(Arrays.asList(Weapon.Enchantment.curses));
+			} else if (currentItemIdx == MOB_IDX) {
+				itemClasses = Bestiary.getAllMobs();
 			} else {
 				itemClasses = new ArrayList<>();
 			}
 			
-			Collections.sort(itemClasses, new Comparator<Class<? extends Item>>() {
+			Collections.sort(itemClasses, new Comparator<Class<?>>() {
 				@Override
-				public int compare(Class<? extends Item> a, Class<? extends Item> b) {
+				public int compare(Class<?> a, Class<?> b) {
+					if (!Item.class.isAssignableFrom(a)) {
+						return 0;
+					}
 					int result = 0;
 					
 					//specifically known items appear first, then seen items, then unknown items.
-					if (known.get(a) && Catalog.isSeen(a)) result -= 2;
-					if (known.get(b) && Catalog.isSeen(b)) result += 2;
-					if (Catalog.isSeen(a))                 result --;
-					if (Catalog.isSeen(b))                 result ++;
+					if (known.get(a) && Catalog.isSeen((Class<? extends Item>) a)) result -= 2;
+					if (known.get(b) && Catalog.isSeen((Class<? extends Item>) b)) result += 2;
+					if (Catalog.isSeen((Class<? extends Item>) a))                 result --;
+					if (Catalog.isSeen((Class<? extends Item>) b))                 result ++;
 					
 					return result;
 				}
 			});
 			
-			for (Class<? extends Item> itemClass : itemClasses) {
-				Item item = Reflection.newInstance(itemClass);
-				boolean itemIDed = known.get(itemClass);
-				boolean itemSeen = Catalog.isSeen(itemClass);
+			for (Class<?> itemClass : itemClasses) {
+				Item item;
+				boolean itemSeen;
+				if (Item.class.isAssignableFrom(itemClass)) {
+					item = (Item) Reflection.newInstance(itemClass);
+					itemSeen = Catalog.isSeen((Class<? extends Item>) itemClass);
+				} else if (Armor.Glyph.class.isAssignableFrom(itemClass)) {
+					item = new Armor.GlyphHolder();
+					((Armor)item).glyph = (Armor.Glyph) Reflection.newInstance(itemClass);
+					itemSeen = true;
+				} else if (Weapon.Enchantment.class.isAssignableFrom(itemClass)) {
+					item = new MeleeWeapon.EnchantHolder();
+					((Weapon)item).enchantment = (Weapon.Enchantment) Reflection.newInstance(itemClass);
+					itemSeen = true;
+				} else if (Mob.class.isAssignableFrom(itemClass)) {
+					Mob mob = (Mob) Reflection.newInstance(itemClass);
+					if (mob instanceof Mimic) {
+						((Mimic) mob).setLevel(Dungeon.scalingDepth());
+						mob.alignment = Char.Alignment.ENEMY;
+					} else if (mob instanceof Wraith) {
+						((Wraith) mob).adjustStats(Dungeon.scalingDepth());
+					} else if (mob instanceof Bee) {
+						((Bee) mob).spawn(Dungeon.scalingDepth());
+						mob.HP = mob.HT;
+						//This doesn't actually spawn anything, only adjusts stats
+					}
+					item = new Mob.MobItem(mob);
+					itemSeen = true;
+				} else {
+					continue;
+				}
+				boolean itemIDed;
+				if (known.containsKey(itemClass)) {
+					itemIDed = known.get(itemClass);
+				} else {
+					itemIDed = true;
+				}
 				if ( itemSeen && !itemIDed ){
 					if (item instanceof Ring){
 						((Ring) item).anonymize();
@@ -573,19 +655,19 @@ public class WndJournal extends WndTabbed {
 					}
 				}
 				ScrollingListPane.ListItem listItem = new ScrollingListPane.ListItem(
-						(itemIDed && itemSeen) ? new ItemSprite(item) : new ItemSprite( ItemSpriteSheet.SOMETHING + spriteIndexes[currentItemIdx]),
+						(itemIDed && itemSeen) ? getImage(item) : new ItemSprite( ItemSpriteSheet.SOMETHING + spriteIndexes[currentItemIdx]),
 						null,
-						itemSeen ? Messages.titleCase(item.trueName()) : "???"
+						itemSeen ? Messages.titleCase(getDisplayedName(item)) : "???"
 				){
 					@Override
 					public boolean onClick(float x, float y) {
 						if (inside( x, y ) && itemSeen) {
 							if (item instanceof ClassArmor){
 								GameScene.show(new WndTitledMessage(new Image(icon),
-										Messages.titleCase(item.trueName()), item.desc()));
+										Messages.titleCase(getDisplayedName(item)), item.desc()));
 							} else {
 								GameScene.show(new WndTitledMessage(new Image(icon),
-										Messages.titleCase(item.trueName()), item.info()));
+										Messages.titleCase(getDisplayedName(item)), item.info()));
 							}
 							return true;
 						} else {
@@ -606,6 +688,26 @@ public class WndJournal extends WndTabbed {
 
 			list.setRect(x, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
 					height - itemButtons[NUM_BUTTONS-1].bottom() - 1);
+		}
+
+		private static String getDisplayedName(Item i) {
+			if (i instanceof Armor.GlyphHolder) {
+				return ((Armor) i).glyph.name();
+			}
+			if (i instanceof MeleeWeapon.EnchantHolder) {
+				return ((Weapon) i).enchantment.name();
+			}
+			if (i instanceof Mob.MobItem) {
+				return i.name();
+			}
+			return i.trueName();
+		}
+
+		private static Image getImage(Item i) {
+			if (i instanceof Mob.MobItem) {
+				return new Image(((Mob.MobItem) i).mob.sprite().forceIdling());
+			}
+			return new ItemSprite(i);
 		}
 		
 	}

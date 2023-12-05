@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -338,7 +339,12 @@ public class WndHeroInfo extends WndTabbed {
 			message = PixelScene.renderTextBlock(Messages.get(WndHeroInfo.class, "abilities_msg"), 6);
 			add(message);
 
-			ArmorAbility[] abilities = cls.armorAbilities();
+			ArmorAbility[] abilities0 = cls.armorAbilities();
+			ArmorAbility[] abilities = new ArmorAbility[abilities0.length + 1];
+			for (int i = 0; i < abilities0.length; ++i) {
+				abilities[i] = abilities0[i];
+			}
+			abilities[abilities0.length] = new Ratmogrify();
 
 			abilityDescs = new RenderedTextBlock[abilities.length];
 			abilityInfos = new IconButton[abilities.length];

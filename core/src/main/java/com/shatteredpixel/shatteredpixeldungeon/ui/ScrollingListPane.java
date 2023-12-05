@@ -77,7 +77,11 @@ public class ScrollingListPane extends ScrollPane {
 
 		float pos = 0;
 		for (Component item : items){
-			item.setRect(0, pos, width, ITEM_HEIGHT);
+			int height = ITEM_HEIGHT;
+			if (item instanceof ListItem && ((ListItem) item).icon != null) {
+				height = Math.max(height, (int) ((ListItem) item).icon.height() + 2);
+			}
+			item.setRect(0, pos, width, height);
 			pos += item.height();
 		}
 

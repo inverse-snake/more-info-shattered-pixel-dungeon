@@ -95,6 +95,8 @@ public class Tengu extends Mob {
 		properties.add(Property.BOSS);
 		
 		viewDistance = 12;
+		minArmor = 0;
+		maxArmor = 5;
 	}
 	
 	@Override
@@ -109,11 +111,6 @@ public class Tengu extends Mob {
 		} else {
 			return 20;
 		}
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 
 	boolean loading = false;

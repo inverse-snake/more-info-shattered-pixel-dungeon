@@ -1130,6 +1130,10 @@ public abstract class Char extends Actor {
 			this.resistances = resistances;
 			this.immunities = immunities;
 		}
+
+		public String title() {
+			return Messages.get(this, name() + ".title");
+		}
 		
 		public HashSet<Class> resistances(){
 			return new HashSet<>(resistances);

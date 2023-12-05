@@ -73,6 +73,9 @@ public abstract class Elemental extends Mob {
 		maxLvl = 20;
 		
 		flying = true;
+
+		minArmor = 0;
+		maxArmor = 5;
 	}
 
 	protected boolean summonedALly;
@@ -103,11 +106,6 @@ public abstract class Elemental extends Mob {
 		int regionScale = Math.max(2, (1 + Dungeon.scalingDepth()/5));
 		defenseSkill = 5*regionScale;
 		HT = 15*regionScale;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 	
 	protected int rangedCooldown = Random.NormalIntRange( 3, 5 );

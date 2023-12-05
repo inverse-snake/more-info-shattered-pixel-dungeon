@@ -110,11 +110,11 @@ public class WandOfPrismaticLight extends DamageWand {
 	public String statsDesc() {
 		if (levelKnown)
 			return Messages.get(this, "stats_desc", min(), max(),
-					Messages.decimalFormat("#.##", 100f * 3f / (5+buffedLvl())),
+					Messages.decimalFormat("#.##", 100f - 100f * 3f / (5+buffedLvl())),
 					Messages.decimalFormat("#.##", 2f + (buffedLvl() * 0.333f)));
 		else
 			return Messages.get(this, "stats_desc", min(0), max(0),
-					Messages.decimalFormat("#.##", 100f * 3f / 5),
+					Messages.decimalFormat("#.##", 100f - 100f * 3f / 5),
 					Messages.decimalFormat("#.##", 2f));
 	}
 

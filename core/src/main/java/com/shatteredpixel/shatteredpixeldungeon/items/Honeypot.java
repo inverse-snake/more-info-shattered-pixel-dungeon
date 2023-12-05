@@ -145,7 +145,7 @@ public class Honeypot extends Item {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", (2 + Dungeon.scalingDepth()) * 4, 9 + Dungeon.scalingDepth(), 2 + Dungeon.scalingDepth(), (2 + Dungeon.scalingDepth()) * 4 / 10);
+		return Messages.get(this, "desc", (2 + Dungeon.scalingDepth()) * 4, 9 + Dungeon.scalingDepth(), (2 + Dungeon.scalingDepth()) * 4 / 10, 2 + Dungeon.scalingDepth());
 	}
 
 	@Override

@@ -59,6 +59,9 @@ public class Ghoul extends Mob {
 		lootChance = 0.2f;
 		
 		properties.add(Property.UNDEAD);
+
+		minArmor = 0;
+		maxArmor = 4;
 	}
 
 	@Override
@@ -69,11 +72,6 @@ public class Ghoul extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 24;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 
 	@Override

@@ -64,6 +64,8 @@ public class Succubus extends Mob {
 		lootChance = 0.33f;
 
 		properties.add(Property.DEMONIC);
+		minArmor = 0;
+		maxArmor = 10;
 	}
 	
 	@Override
@@ -155,11 +157,6 @@ public class Succubus extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 40;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	@Override
