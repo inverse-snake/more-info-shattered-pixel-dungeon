@@ -26,7 +26,7 @@ import com.watabou.noosa.TextureFilm;
 
 public class ItemSpriteSheet {
 
-	private static final int WIDTH = 19;
+	public static final int WIDTH = 19;
 	private static final int SHPD_WIDTH = 16;
 	public static final int SIZE = 16;
 
@@ -437,13 +437,13 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_CHALICE1   = ARTIFACTS+13;
 	public static final int ARTIFACT_CHALICE2   = ARTIFACTS+14;
 	public static final int ARTIFACT_CHALICE3   = ARTIFACTS+15;
-	public static final int ARTIFACT_SANDALS    = ARTIFACTS+16;
-	public static final int ARTIFACT_SHOES      = ARTIFACTS+17;
-	public static final int ARTIFACT_BOOTS      = ARTIFACTS+18;
-	public static final int ARTIFACT_GREAVES    = ARTIFACTS+19;
-	public static final int ARTIFACT_ROSE1      = ARTIFACTS+20;
-	public static final int ARTIFACT_ROSE2      = ARTIFACTS+21;
-	public static final int ARTIFACT_ROSE3      = ARTIFACTS+22;
+	public static final int ARTIFACT_SANDALS    = ARTIFACTS+16 + WIDTH - SHPD_WIDTH;
+	public static final int ARTIFACT_SHOES      = ARTIFACTS+17 + WIDTH - SHPD_WIDTH;
+	public static final int ARTIFACT_BOOTS      = ARTIFACTS+18 + WIDTH - SHPD_WIDTH;
+	public static final int ARTIFACT_GREAVES    = ARTIFACTS+19 + WIDTH - SHPD_WIDTH;
+	public static final int ARTIFACT_ROSE1      = ARTIFACTS+20 + WIDTH - SHPD_WIDTH;
+	public static final int ARTIFACT_ROSE2      = ARTIFACTS+21 + WIDTH - SHPD_WIDTH;
+	public static final int ARTIFACT_ROSE3      = ARTIFACTS+22 + WIDTH - SHPD_WIDTH;
 	static{
 		assignItemRect(ARTIFACT_CLOAK,      9,  15);
 		assignItemRect(ARTIFACT_ARMBAND,    16, 13);
